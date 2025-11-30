@@ -11,17 +11,17 @@ public class BuscarClienteUseCaseImpl extends BuscarClienteUseCase {
     }
 
     @Override
-    public BuscarClienteOutput execute(BuscarClienteInput buscarClienteInput) {
+    public BuscarClienteOutput execute(Long id) {
         try {
-            final var cliente = this.clienteRepository.buscarPorId(buscarClienteInput.id())
-                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + buscarClienteInput.id()));
+            final var cliente = this.clienteRepository.buscarPorId(id)
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
             return new BuscarClienteOutput(
                     cliente.getId(),
                     cliente.getNome(),
                     cliente.getSexo(),
                     cliente.getEmail(),
-                    cliente.getDocumento(),
+                    cliente.getCpf(),
                     cliente.getTelefone(),
                     cliente.getSobre()
             );

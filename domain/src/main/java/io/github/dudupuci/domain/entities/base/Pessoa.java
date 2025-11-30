@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 public abstract class Pessoa extends Entidade<Long> {
     protected String nome;
+    protected String sobrenome;
     protected Sexo sexo;
 }

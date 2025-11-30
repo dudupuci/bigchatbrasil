@@ -12,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Cliente extends Pessoa {
     private String email;
-    private String documento;
+    private String cpf;
     private String telefone;
     private String sobre;
 

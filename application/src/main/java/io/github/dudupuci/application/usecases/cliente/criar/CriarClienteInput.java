@@ -17,7 +17,7 @@ public record CriarClienteInput(
         cliente.setNome(input.nome());
         cliente.setSexo(Sexo.valueOf(input.sexo()));
         cliente.setEmail(input.email());
-        cliente.setDocumento(input.documento());
+        cliente.setCpf(input.documento());
         cliente.setTelefone(input.telefone());
         cliente.setSobre(input.sobre());
         return cliente;
