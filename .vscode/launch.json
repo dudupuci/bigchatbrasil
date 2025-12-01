@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot - Local Profile",
+      "request": "launch",
+      "mainClass": "io.github.dudupuci.infrastructure.Main",
+      "projectName": "infrastructure",
+      "vmArgs": "-Dspring.profiles.active=local",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot - Docker Profile",
+      "request": "launch",
+      "mainClass": "io.github.dudupuci.infrastructure.Main",
+      "projectName": "infrastructure",
+      "vmArgs": "-Dspring.profiles.active=docker",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot - Default",
+      "request": "launch",
+      "mainClass": "io.github.dudupuci.infrastructure.Main",
+      "projectName": "infrastructure",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+

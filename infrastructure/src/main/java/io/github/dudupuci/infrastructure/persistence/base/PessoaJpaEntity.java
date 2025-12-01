@@ -12,7 +12,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
-public class PessoaJpaEntity extends JpaEntity{
+public class PessoaJpaEntity extends JpaEntity {
 
     @Column(nullable = false)
     @NotBlank(message = "Nome não pode ser nulo ou vazio")

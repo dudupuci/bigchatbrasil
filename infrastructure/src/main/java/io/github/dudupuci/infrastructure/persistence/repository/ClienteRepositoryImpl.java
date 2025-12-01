@@ -5,6 +5,7 @@ import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.infrastructure.persistence.mapper.ClienteMapper;
 import io.github.dudupuci.infrastructure.persistence.repository.jpa.ClienteJpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         this.clienteMapper = clienteMapper;
     }
 
+    @Transactional
     @Override
     public Cliente salvar(Cliente cliente) {
         cliente.setDataCriacao(Instant.now());

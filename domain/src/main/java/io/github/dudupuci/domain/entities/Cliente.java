@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -18,6 +17,5 @@ public class Cliente extends Pessoa {
 
     @Override
     public void validar() {
-        Objects.requireNonNull(this.id, "ID do cliente não pode ser nulo");
     }
 }

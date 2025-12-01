@@ -11,7 +11,7 @@ import java.time.Instant;
 @Getter
 public abstract class JpaEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Setter

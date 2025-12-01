@@ -5,6 +5,7 @@ import io.github.dudupuci.domain.enums.Sexo;
 
 public record CriarClienteInput(
         String nome,
+        String sobrenome,
         String sexo,
         String email,
         String documento,
@@ -15,7 +16,8 @@ public record CriarClienteInput(
     public static Cliente criarEntidade(CriarClienteInput input) {
         final var cliente = new Cliente();
         cliente.setNome(input.nome());
-        cliente.setSexo(Sexo.valueOf(input.sexo()));
+        cliente.setSobrenome(input.sobre);
+        cliente.setSexo(Sexo.fromDescricao(input.sexo));
         cliente.setEmail(input.email());
         cliente.setCpf(input.documento());
         cliente.setTelefone(input.telefone());

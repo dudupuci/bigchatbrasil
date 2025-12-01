@@ -1,10 +1,73 @@
 package io.github.dudupuci.infrastructure.web.controllers;
 
+import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
+import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
+import io.github.dudupuci.infrastructure.persistence.facade.ClienteFacade;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.ClientesControllerAPI;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.github.dudupuci.infrastructure.web.dtos.request.AtualizarClienteApiRequest;
+import io.github.dudupuci.infrastructure.web.dtos.request.CriarClienteApiRequest;
+import io.github.dudupuci.infrastructure.web.dtos.response.AtualizarClienteApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.response.BuscarClienteApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.response.CriarClienteApiResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/clientes")
 public class ClientesController implements ClientesControllerAPI {
+
+    private final ClienteFacade clienteFacade;
+
+    public ClientesController(ClienteFacade clienteFacade) {
+        this.clienteFacade = clienteFacade;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> criar(@RequestBody CriarClienteApiRequest request) {
+        try {
+            CriarClienteInput input = request.toApplicationInput();
+
+            CriarClienteApiResponse apiResponse = CriarClienteApiResponse.toApiResponse(
+                    this.clienteFacade.criar(input)
+            );
+
+            return ResponseEntity.ok(apiResponse);
+        } catch (Exception err) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        try {
+            BuscarClienteApiResponse apiResponse = BuscarClienteApiResponse.toApiResponse(
+                    this.clienteFacade.buscar(id)
+            );
+            return ResponseEntity.ok(apiResponse);
+        } catch (Exception err) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarClienteApiRequest request) {
+        try {
+            AtualizarClienteInput input = request.toApplicationInput(id);
+            this.clienteFacade.atualizar(input);
+            AtualizarClienteApiResponse apiResponse = AtualizarClienteApiResponse.toApiResponse(id, input.nome());
+            return ResponseEntity.ok(apiResponse);
+        } catch (Exception err) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        try {
+            this.clienteFacade.deletar(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception err) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

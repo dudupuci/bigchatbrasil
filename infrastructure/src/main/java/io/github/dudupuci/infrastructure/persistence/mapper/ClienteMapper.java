@@ -17,6 +17,7 @@ public class ClienteMapper {
         ClienteJpaEntity jpaEntity = new ClienteJpaEntity();
         // Não seta o ID - é gerado automaticamente pelo banco
         jpaEntity.setNome(cliente.getNome());
+        jpaEntity.setSobrenome(cliente.getSobrenome());
         jpaEntity.setSexo(cliente.getSexo());
         jpaEntity.setEmail(cliente.getEmail());
         jpaEntity.setCpf(cliente.getCpf());

@@ -14,5 +14,13 @@ public enum Sexo {
         this.descricao = descricao;
     }
 
+    public static Sexo fromDescricao(String descricao) {
+        for (Sexo sexo : Sexo.values()) {
+            if (sexo.getDescricao().equalsIgnoreCase(descricao)) {
+                return sexo;
+            }
+        }
+        throw new IllegalArgumentException("Descrição de sexo inválida: " + descricao);
+    }
 
 }
