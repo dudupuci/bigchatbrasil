@@ -21,7 +21,7 @@ public class BuscarClienteUseCaseImpl extends BuscarClienteUseCase {
                     cliente.getNome(),
                     cliente.getSexo(),
                     cliente.getEmail(),
-                    cliente.getCpf(),
+                    cliente.getCpfCnpj(),
                     cliente.getTelefone(),
                     cliente.getSobre()
             );

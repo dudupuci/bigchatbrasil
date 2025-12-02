@@ -1,15 +1,17 @@
 package io.github.dudupuci.infrastructure.persistence;
 
+import io.github.dudupuci.domain.enums.Assinatura;
+import io.github.dudupuci.domain.enums.TipoDocumento;
+import io.github.dudupuci.infrastructure.configuration.annotations.CpfOuCnpj;
 import io.github.dudupuci.infrastructure.persistence.base.PessoaJpaEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "clientes")
@@ -22,9 +24,19 @@ public class ClienteJpaEntity extends PessoaJpaEntity {
     @Email(message = "Email inválido")
     private String email;
 
-    @CPF(message = "CPF inválido")
+    @CpfOuCnpj
     @Column(unique = true)
-    private String cpf;
+    private String cpfCnpj;
+
+    @Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDocumento;
+
+    @Enumerated(EnumType.STRING)
+    private Assinatura plano;
+
+    private BigDecimal saldo;
+
+    private BigDecimal limite;
 
     @Column(nullable = false)
     private String telefone;

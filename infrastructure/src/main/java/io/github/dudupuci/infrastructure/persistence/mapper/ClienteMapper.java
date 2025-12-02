@@ -20,7 +20,7 @@ public class ClienteMapper {
         jpaEntity.setSobrenome(cliente.getSobrenome());
         jpaEntity.setSexo(cliente.getSexo());
         jpaEntity.setEmail(cliente.getEmail());
-        jpaEntity.setCpf(cliente.getCpf());
+        jpaEntity.setCpfCnpj(cliente.getCpfCnpj());
         jpaEntity.setTelefone(cliente.getTelefone());
         jpaEntity.setSobre(cliente.getSobre());
 
@@ -49,7 +49,7 @@ public class ClienteMapper {
         cliente.setNome(jpaEntity.getNome());
         cliente.setSexo(jpaEntity.getSexo());
         cliente.setEmail(jpaEntity.getEmail());
-        cliente.setCpf(jpaEntity.getCpf());
+        cliente.setCpfCnpj(jpaEntity.getCpfCnpj());
         cliente.setTelefone(jpaEntity.getTelefone());
         cliente.setSobre(jpaEntity.getSobre());
         cliente.setDataCriacao(jpaEntity.getDataCriacao());

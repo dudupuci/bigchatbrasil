@@ -19,7 +19,7 @@ public record CriarClienteInput(
         cliente.setSobrenome(input.sobre);
         cliente.setSexo(Sexo.fromDescricao(input.sexo));
         cliente.setEmail(input.email());
-        cliente.setCpf(input.documento());
+        cliente.setCpfCnpj(input.documento());
         cliente.setTelefone(input.telefone());
         cliente.setSobre(input.sobre());
         return cliente;
