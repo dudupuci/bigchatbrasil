@@ -42,7 +42,7 @@ public class EmpresaFacadeImpl implements EmpresaFacade {
     }
 
     @Override
-    public BuscarEmpresaOutput buscar(BuscarEmpresaInput input) {
+    public BuscarEmpresaOutput buscar(Long input) {
         return this.buscarEmpresaUseCase.execute(input);
     }
 

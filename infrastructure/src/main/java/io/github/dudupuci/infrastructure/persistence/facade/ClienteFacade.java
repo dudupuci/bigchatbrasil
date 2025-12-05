@@ -9,5 +9,6 @@ public interface ClienteFacade {
     CriarClienteOutput criar(CriarClienteInput input);
     void atualizar(AtualizarClienteInput input);
     BuscarClienteOutput buscar(Long input);
+    BuscarClienteOutput buscarPor(String param);
     void deletar(Long input);
 }

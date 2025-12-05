@@ -43,4 +43,9 @@ public class ClienteJpaEntity extends PessoaJpaEntity {
 
     @NotBlank(message = "O campo 'sobre' não pode estar em branco")
     private String sobre;
+
+    private String senha;
+
+    @Column(name = "is_ativo")
+    private Boolean isAtivo = true;
 }

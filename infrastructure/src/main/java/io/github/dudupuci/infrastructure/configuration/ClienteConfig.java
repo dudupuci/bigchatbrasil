@@ -1,5 +1,7 @@
 package io.github.dudupuci.infrastructure.configuration;
 
+import io.github.dudupuci.application.usecases.cliente.buscar.BuscarClientePorParamsUseCase;
+import io.github.dudupuci.application.usecases.cliente.buscar.BuscarClientePorParamsUseCaseImpl;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteUseCase;
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteUseCaseImpl;
@@ -34,6 +36,11 @@ public class ClienteConfig {
     @Bean
     public BuscarClienteUseCase buscarClienteUseCase() {
         return new BuscarClienteUseCaseImpl(repository);
+    }
+
+    @Bean
+    public BuscarClientePorParamsUseCase buscarClientePorParamsUseCase() {
+        return new BuscarClientePorParamsUseCaseImpl(repository);
     }
 
     @Bean

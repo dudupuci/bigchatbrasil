@@ -5,12 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class Mensagem extends Notificacao {
+    private Long id;
     private UUID conversaId;
     private Long destinatarioId;
+
+    @Override
+    public void validar() {
+
+    }
 }

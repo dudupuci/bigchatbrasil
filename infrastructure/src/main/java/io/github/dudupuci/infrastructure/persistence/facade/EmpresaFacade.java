@@ -9,7 +9,7 @@ import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaOutput;
 public interface EmpresaFacade {
     CriarEmpresaOutput criar(CriarEmpresaInput input);
     void atualizar(AtualizarEmpresaInput input);
-    BuscarEmpresaOutput buscar(BuscarEmpresaInput input);
+    BuscarEmpresaOutput buscar(Long input);
     void deletar(Long input);
 }
 

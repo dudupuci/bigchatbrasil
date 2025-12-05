@@ -24,7 +24,6 @@ public class Cliente extends Pessoa {
     private String sobre;
     private Boolean isAtivo;
 
-
     @Override
     public void validar() {
     }
