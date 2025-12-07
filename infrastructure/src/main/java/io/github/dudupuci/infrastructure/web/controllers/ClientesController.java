@@ -2,6 +2,7 @@ package io.github.dudupuci.infrastructure.web.controllers;
 
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
 import io.github.dudupuci.infrastructure.persistence.facade.clientes.ClienteFacade;
+import io.github.dudupuci.infrastructure.security.RequiresAuth;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.ClientesControllerAPI;
 import io.github.dudupuci.infrastructure.web.dtos.request.cliente.AtualizarClienteApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.response.cliente.AtualizarClienteApiResponse;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/clientes")
+@RequiresAuth  // ✅ Todos os endpoints de clientes requerem autenticação
 public class ClientesController implements ClientesControllerAPI {
 
     private final ClienteFacade clienteFacade;
@@ -20,7 +22,10 @@ public class ClientesController implements ClientesControllerAPI {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<?> buscarPorId(
+            @RequestHeader(value = "X-Session-Id") String sessionId,
+            @PathVariable Long id
+    ) {
         try {
             BuscarClienteApiResponse apiResponse = BuscarClienteApiResponse.toApiResponse(
                     this.clienteFacade.buscarPorId(id)
