@@ -1,5 +1,6 @@
 package io.github.dudupuci.application.usecases.empresa.criar;
 
+import io.github.dudupuci.domain.enums.TipoOperacao;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 
 import java.util.Base64;
@@ -17,7 +18,7 @@ public class CriarEmpresaUseCaseImpl extends CriarEmpresaUseCase {
         try {
             final var empresa = CriarEmpresaInput.criarEntidade(criarEmpresaInput);
 
-            empresa.validar();
+            empresa.validar(TipoOperacao.CRIACAO);
             empresa.setSenha(this.encodePassword(empresa.getSenha()));
 
             final var empresaCriada = this.empresaRepository.salvar(empresa);

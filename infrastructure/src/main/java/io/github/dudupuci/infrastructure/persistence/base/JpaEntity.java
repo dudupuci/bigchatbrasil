@@ -12,6 +12,7 @@ import java.time.Instant;
 public abstract class JpaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     protected Long id;
 
     @Setter

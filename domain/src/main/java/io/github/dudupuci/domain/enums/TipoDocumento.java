@@ -10,7 +10,7 @@ public enum TipoDocumento {
         this.descricao = descricao;
     }
 
-    public TipoDocumento fromDescricao(String descricao) {
+    public static TipoDocumento fromDescricao(String descricao) {
         for (TipoDocumento tipo : TipoDocumento.values()) {
             if (tipo.descricao.equalsIgnoreCase(descricao)) {
                 return tipo;

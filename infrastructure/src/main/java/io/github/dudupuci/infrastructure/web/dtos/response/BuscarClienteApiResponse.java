@@ -3,7 +3,6 @@ package io.github.dudupuci.infrastructure.web.dtos.response;
 import io.github.dudupuci.application.usecases.cliente.buscar.BuscarClienteOutput;
 
 public record BuscarClienteApiResponse(
-        Long id,
         String nome,
         String sexo,
         String email,
@@ -13,7 +12,6 @@ public record BuscarClienteApiResponse(
 ) {
     public static BuscarClienteApiResponse toApiResponse(BuscarClienteOutput applicationOutput) {
         return new BuscarClienteApiResponse(
-                applicationOutput.id(),
                 applicationOutput.nome(),
                 applicationOutput.sexo(),
                 applicationOutput.email(),

@@ -1,6 +1,7 @@
 package io.github.dudupuci.domain.entities;
 
 import io.github.dudupuci.domain.entities.base.Notificacao;
+import io.github.dudupuci.domain.enums.TipoOperacao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class Mensagem extends Notificacao {
     private Long destinatarioId;
 
     @Override
-    public void validar() {
+    public void validar(TipoOperacao tipoOperacao) {
 
     }
 }

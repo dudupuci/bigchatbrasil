@@ -1,6 +1,7 @@
 package io.github.dudupuci.application.usecases.cliente.criar;
 
 import io.github.dudupuci.domain.enums.TipoDocumento;
+import io.github.dudupuci.domain.enums.TipoOperacao;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 
 import java.util.Base64;
@@ -18,7 +19,7 @@ public class CriarClienteUseCaseImpl extends CriarClienteUseCase {
         try {
             final var cliente = CriarClienteInput.criarEntidade(criarClienteInput);
 
-            cliente.validar();
+            cliente.validar(TipoOperacao.CRIACAO);
             cliente.setSenha(this.encodePassword(cliente.getSenha()));
 
             final var clienteCriado = this.clienteRepository.salvar(cliente);

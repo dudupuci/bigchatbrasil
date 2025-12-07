@@ -6,7 +6,9 @@ public record CriarEmpresaInput(
         String razaoSocial,
         String cnpj,
         String telefone,
-        String email
+        String email,
+        String senha,
+        String confirmacaoSenha
 ) {
 
     public static Empresa criarEntidade(CriarEmpresaInput input) {
@@ -15,6 +17,9 @@ public record CriarEmpresaInput(
         empresa.setCnpj(input.cnpj());
         empresa.setTelefone(input.telefone());
         empresa.setEmail(input.email());
+
+        empresa.setSenha(input.senha());
+        empresa.setConfirmacaoSenha(input.confirmacaoSenha());
         return empresa;
     }
 

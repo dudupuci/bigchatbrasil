@@ -1,5 +1,6 @@
 package io.github.dudupuci.application.usecases.empresa.atualizar;
 
+import io.github.dudupuci.domain.enums.TipoOperacao;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 
 public class AtualizarEmpresaUseCaseImpl extends AtualizarEmpresaUseCase {
@@ -19,7 +20,7 @@ public class AtualizarEmpresaUseCaseImpl extends AtualizarEmpresaUseCase {
             this.empresaRepository.buscarPorId(empresa.getId())
                     .orElseThrow(() -> new RuntimeException("Empresa não encontrada com ID: " + empresa.getId()));
 
-            empresa.validar();
+            empresa.validar(TipoOperacao.ATUALIZACAO);
             this.empresaRepository.atualizar(empresa);
 
         } catch (Exception err) {

@@ -1,15 +1,17 @@
 package io.github.dudupuci.infrastructure.web.dtos.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
-import io.github.dudupuci.domain.enums.Assinatura;
 
 public record CriarClienteApiRequest(
         String nome,
         String sobrenome,
         String sexo,
         String email,
+        @JsonProperty(value = "cpf_cnpj")
         String cpfCnpj,
         String senha,
+        @JsonProperty(value = "confirmacao_senha")
         String confirmacaoSenha,
         String telefone,
         String sobre

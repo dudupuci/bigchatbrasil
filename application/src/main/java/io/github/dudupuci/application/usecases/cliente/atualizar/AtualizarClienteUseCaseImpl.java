@@ -1,5 +1,6 @@
 package io.github.dudupuci.application.usecases.cliente.atualizar;
 
+import io.github.dudupuci.domain.enums.TipoOperacao;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 
 public class AtualizarClienteUseCaseImpl extends AtualizarClienteUseCase {
@@ -11,15 +12,15 @@ public class AtualizarClienteUseCaseImpl extends AtualizarClienteUseCase {
     }
 
     @Override
-    public void execute(AtualizarClienteInput atualizarClienteInput) {
+    public void execute(AtualizarClienteInput input) {
         try {
-            final var cliente = AtualizarClienteInput.criarEntidade(atualizarClienteInput);
-
             // Verifica se o cliente existe
-            this.clienteRepository.buscarPorId(cliente.getId())
-                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + cliente.getId()));
+            this.clienteRepository.buscarPorId(input.id())
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + input.id()));
 
-            cliente.validar();
+            final var cliente = AtualizarClienteInput.atualizarEntidade(input);
+
+            cliente.validar(TipoOperacao.ATUALIZACAO);
             this.clienteRepository.atualizar(cliente);
 
         } catch (Exception err) {

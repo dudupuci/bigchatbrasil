@@ -15,15 +15,30 @@ public class ClienteMapper {
         }
 
         ClienteJpaEntity jpaEntity = new ClienteJpaEntity();
+
+        // ⚠️ IMPORTANTE: NUNCA setamos o ID aqui!
+        // O JPA com @GeneratedValue gerencia o ID automaticamente
+        // Para criação: ID é null, PostgreSQL gera via SERIAL
+        // Para atualização: Usamos findById() + setters, não recriamos a entidade
+
+        // Campos de Pessoa
         jpaEntity.setNome(cliente.getNome());
         jpaEntity.setSobrenome(cliente.getSobrenome());
         jpaEntity.setSexo(cliente.getSexo());
+
+        // Campos específicos de Cliente
         jpaEntity.setEmail(cliente.getEmail());
         jpaEntity.setCpfCnpj(cliente.getCpfCnpj());
+        jpaEntity.setTipoDocumento(cliente.getTipoDocumento());
+        jpaEntity.setPlano(cliente.getPlano());
+        jpaEntity.setSaldo(cliente.getSaldo());
+        jpaEntity.setLimite(cliente.getLimite());
         jpaEntity.setTelefone(cliente.getTelefone());
-        jpaEntity.setSenha(cliente.getSenha());
         jpaEntity.setSobre(cliente.getSobre());
+        jpaEntity.setSenha(cliente.getSenha());
+        jpaEntity.setIsAtivo(cliente.getIsAtivo() != null ? cliente.getIsAtivo() : true);
 
+        // Data de criação e atualização
         if (cliente.getDataCriacao() != null) {
             jpaEntity.setDataCriacao(cliente.getDataCriacao());
         } else {
@@ -45,15 +60,28 @@ public class ClienteMapper {
         }
 
         Cliente cliente = new Cliente();
+
+        // ID e timestamps
         cliente.setId(jpaEntity.getId());
-        cliente.setNome(jpaEntity.getNome());
-        cliente.setSexo(jpaEntity.getSexo());
-        cliente.setEmail(jpaEntity.getEmail());
-        cliente.setCpfCnpj(jpaEntity.getCpfCnpj());
-        cliente.setTelefone(jpaEntity.getTelefone());
-        cliente.setSobre(jpaEntity.getSobre());
         cliente.setDataCriacao(jpaEntity.getDataCriacao());
         cliente.setDataAtualizacao(jpaEntity.getDataAtualizacao());
+
+        // Campos de Pessoa
+        cliente.setNome(jpaEntity.getNome());
+        cliente.setSobrenome(jpaEntity.getSobrenome());
+        cliente.setSexo(jpaEntity.getSexo());
+
+        // Campos específicos de Cliente
+        cliente.setEmail(jpaEntity.getEmail());
+        cliente.setCpfCnpj(jpaEntity.getCpfCnpj());
+        cliente.setTipoDocumento(jpaEntity.getTipoDocumento());
+        cliente.setPlano(jpaEntity.getPlano());
+        cliente.setSaldo(jpaEntity.getSaldo());
+        cliente.setLimite(jpaEntity.getLimite());
+        cliente.setTelefone(jpaEntity.getTelefone());
+        cliente.setSobre(jpaEntity.getSobre());
+        cliente.setSenha(jpaEntity.getSenha());
+        cliente.setIsAtivo(jpaEntity.getIsAtivo());
 
         return cliente;
     }

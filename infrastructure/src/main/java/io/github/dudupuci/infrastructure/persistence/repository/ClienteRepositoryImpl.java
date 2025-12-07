@@ -2,7 +2,6 @@ package io.github.dudupuci.infrastructure.persistence.repository;
 
 import io.github.dudupuci.domain.entities.Cliente;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
-import io.github.dudupuci.infrastructure.persistence.ClienteJpaEntity;
 import io.github.dudupuci.infrastructure.persistence.mapper.ClienteMapper;
 import io.github.dudupuci.infrastructure.persistence.repository.jpa.ClienteJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -25,7 +24,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     @Transactional
     @Override
     public Cliente salvar(Cliente cliente) {
-        cliente.setDataCriacao(Instant.now());
+        if (cliente.getDataCriacao() == null) {
+            cliente.setDataCriacao(Instant.now());
+        }
+
         cliente.setDataAtualizacao(Instant.now());
 
         var jpaEntity = clienteMapper.toJpaEntity(cliente);
@@ -34,11 +36,32 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         return clienteMapper.toDomain(savedEntity);
     }
 
+    @Transactional
     @Override
     public void atualizar(Cliente cliente) {
-        cliente.setDataAtualizacao(Instant.now());
+        if (cliente.getId() == null) {
+            throw new IllegalArgumentException("Cliente deve ter um ID para ser atualizado");
+        }
 
-        var jpaEntity = clienteMapper.toJpaEntity(cliente);
+        var jpaEntity = clienteJpaRepository.findById(cliente.getId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado para atualização"));
+
+        // Atualiza apenas os campos (mantém o ID original)
+        jpaEntity.setNome(cliente.getNome());
+        jpaEntity.setSobrenome(cliente.getSobrenome());
+        jpaEntity.setSexo(cliente.getSexo());
+        jpaEntity.setEmail(cliente.getEmail());
+        jpaEntity.setCpfCnpj(cliente.getCpfCnpj());
+        jpaEntity.setTipoDocumento(cliente.getTipoDocumento());
+        jpaEntity.setPlano(cliente.getPlano());
+        jpaEntity.setSaldo(cliente.getSaldo());
+        jpaEntity.setLimite(cliente.getLimite());
+        jpaEntity.setTelefone(cliente.getTelefone());
+        jpaEntity.setSobre(cliente.getSobre());
+        jpaEntity.setSenha(cliente.getSenha());
+        jpaEntity.setIsAtivo(cliente.getIsAtivo());
+        jpaEntity.setDataAtualizacao(Instant.now());
+
         clienteJpaRepository.save(jpaEntity);
     }
 
