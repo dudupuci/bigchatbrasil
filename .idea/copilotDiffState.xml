@@ -221,6 +221,14 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/infrastructure/src/main/java/io/github/dudupuci/infrastructure/security/TipoUsuario.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/infrastructure/src/main/java/io/github/dudupuci/infrastructure/security/TipoUsuario.java" />
+              <option name="updatedContent" value="package io.github.dudupuci.infrastructure.security;&#10;&#10;/**&#10; * Enum para identificar o tipo de usuário logado&#10; */&#10;public enum TipoUsuario {&#10;    CLIENTE,&#10;    EMPRESA&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/infrastructure/src/main/java/io/github/dudupuci/infrastructure/web/dtos/response/FilaEstatisticasResponse.java">
           <value>
             <PendingDiffInfo>

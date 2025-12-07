@@ -49,5 +49,10 @@ public class EmpresaRepositoryImpl implements EmpresaRepository {
     public void deletarPorId(Long id) {
         empresaJpaRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<Empresa> buscarPorEmail(String email) {
+        return empresaJpaRepository.findByEmail(email).map(empresaMapper::toDomain);
+    }
 }
 

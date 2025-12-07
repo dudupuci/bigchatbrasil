@@ -3,11 +3,10 @@ package io.github.dudupuci.domain.entities;
 import io.github.dudupuci.domain.entities.base.Pessoa;
 import io.github.dudupuci.domain.enums.Assinatura;
 import io.github.dudupuci.domain.enums.TipoDocumento;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 
 @Getter
@@ -24,7 +23,21 @@ public class Cliente extends Pessoa {
     private String sobre;
     private Boolean isAtivo;
 
+    private transient String senha;
+    private transient String confirmacaoSenha;
+
     @Override
     public void validar() {
+        Objects.requireNonNull(this.nome, "Nome do cliente não pode ser nulo");
+        Objects.requireNonNull(this.email, "Email do cliente não pode ser nulo");
+        Objects.requireNonNull(this.cpfCnpj, "CPF/CNPJ do cliente não pode ser nulo");
+        Objects.requireNonNull(this.tipoDocumento, "Tipo de documento do cliente não pode ser nulo");
+        Objects.requireNonNull(this.plano, "Plano do cliente não pode ser nulo");
+        Objects.requireNonNull(this.senha, "Senha do cliente não pode ser nulo");
+        Objects.requireNonNull(this.confirmacaoSenha, "Confirmacao da senha não pode ser null");
+
+        if (!this.senha.equals(this.confirmacaoSenha)) {
+            throw new IllegalArgumentException("A senha e a confirmação de senha não coincidem.");
+        }
     }
 }

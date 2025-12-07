@@ -16,15 +16,7 @@ public class BuscarClienteUseCaseImpl extends BuscarClienteUseCase {
             final var cliente = this.clienteRepository.buscarPorId(id)
                     .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id));
 
-            return new BuscarClienteOutput(
-                    cliente.getId(),
-                    cliente.getNome(),
-                    cliente.getSexo(),
-                    cliente.getEmail(),
-                    cliente.getCpfCnpj(),
-                    cliente.getTelefone(),
-                    cliente.getSobre()
-            );
+            return BuscarClienteOutput.fromDomain(cliente);
 
         } catch (Exception err) {
             throw new RuntimeException(err);

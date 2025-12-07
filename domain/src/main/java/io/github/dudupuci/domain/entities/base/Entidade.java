@@ -7,8 +7,8 @@ import java.time.Instant;
 
 @Getter
 @Setter
-public abstract class Entidade<T> {
-    protected T id;
+public abstract class Entidade {
+    protected Long id;
     protected Instant dataCriacao;
     protected Instant dataAtualizacao;
 

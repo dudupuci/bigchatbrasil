@@ -2,6 +2,7 @@ package io.github.dudupuci.infrastructure.persistence.repository;
 
 import io.github.dudupuci.domain.entities.Cliente;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
+import io.github.dudupuci.infrastructure.persistence.ClienteJpaEntity;
 import io.github.dudupuci.infrastructure.persistence.mapper.ClienteMapper;
 import io.github.dudupuci.infrastructure.persistence.repository.jpa.ClienteJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -50,5 +51,14 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     @Override
     public void deletarPorId(Long id) {
         clienteJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Cliente> buscarPorEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return Optional.empty();
+        }
+        return clienteJpaRepository.findByEmail(email)
+                .map(clienteMapper::toDomain);
     }
 }

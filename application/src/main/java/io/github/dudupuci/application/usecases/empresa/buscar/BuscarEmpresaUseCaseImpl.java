@@ -16,13 +16,7 @@ public class BuscarEmpresaUseCaseImpl extends BuscarEmpresaUseCase {
             final var empresa = this.empresaRepository.buscarPorId(buscarEmpresaInput.id())
                     .orElseThrow(() -> new RuntimeException("Empresa não encontrada com ID: " + buscarEmpresaInput.id()));
 
-            return new BuscarEmpresaOutput(
-                    empresa.getId(),
-                    empresa.getRazaoSocial(),
-                    empresa.getCnpj(),
-                    empresa.getTelefone(),
-                    empresa.getEmail()
-            );
+            return BuscarEmpresaOutput.fromDomain(empresa);
 
         } catch (Exception err) {
             throw new RuntimeException(err);

@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.persistence.facade;
+package io.github.dudupuci.infrastructure.persistence.facade.clientes;
 
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteUseCase;
@@ -16,22 +16,22 @@ public class ClienteFacadeImpl implements ClienteFacade {
 
     private final CriarClienteUseCase criarClienteUseCase;
     private final AtualizarClienteUseCase atualizarClienteUseCase;
-    private final BuscarClienteUseCase buscarClienteUseCase;
-    private final BuscarClientePorParamsUseCase buscarClientePorParamsUseCase;
     private final DeletarClienteUseCase deletarClienteUseCase;
+    private final BuscarClientePorParamsUseCase buscarClientePorParamsUseCase;
+    private final BuscarClienteUseCase buscarClienteUseCase;
 
     public ClienteFacadeImpl(
             CriarClienteUseCase criarClienteUseCase,
             AtualizarClienteUseCase atualizarClienteUseCase,
-            BuscarClienteUseCase buscarClienteUseCase,
             DeletarClienteUseCase deletarClienteUseCase,
-            BuscarClientePorParamsUseCase buscarClientePorParamsUseCase
+            BuscarClientePorParamsUseCase buscarClientePorParamsUseCase,
+            BuscarClienteUseCase buscarClienteUseCase
     ) {
         this.criarClienteUseCase = criarClienteUseCase;
         this.atualizarClienteUseCase = atualizarClienteUseCase;
-        this.buscarClienteUseCase = buscarClienteUseCase;
         this.deletarClienteUseCase = deletarClienteUseCase;
         this.buscarClientePorParamsUseCase = buscarClientePorParamsUseCase;
+        this.buscarClienteUseCase = buscarClienteUseCase;
     }
 
     @Override
@@ -45,13 +45,13 @@ public class ClienteFacadeImpl implements ClienteFacade {
     }
 
     @Override
-    public BuscarClienteOutput buscar(Long input) {
-        return this.buscarClienteUseCase.execute(input);
+    public BuscarClienteOutput buscarPorEmail(String email) {
+        return this.buscarClientePorParamsUseCase.execute(email);
     }
 
     @Override
-    public BuscarClienteOutput buscarPor(String param) {
-        return null;
+    public BuscarClienteOutput buscarPorId(Long id) {
+        return this.buscarClienteUseCase.execute(id);
     }
 
     @Override

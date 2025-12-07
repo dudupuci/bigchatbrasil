@@ -47,7 +47,7 @@ public class MensagensController implements MensagensControllerAPI {
         try {
             // Identifica o remetente (prioridade: header > sessão > request)
             Long remetenteId = remetenteIdHeader != null ? remetenteIdHeader :
-                    (sessionManager.isValidSession(sessionId) ? sessionManager.getClienteId(sessionId) : 1L);
+                    (sessionManager.isValidSession(sessionId) ? sessionManager.getIdUsuario(sessionId) : 1L);
 
             logger.info("Recebendo mensagem de remetente {} para destinatário {}",
                     remetenteId, request.destinatarioId());

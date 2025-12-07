@@ -1,5 +1,6 @@
 package io.github.dudupuci.infrastructure.persistence;
 
+import io.github.dudupuci.domain.entities.Cliente;
 import io.github.dudupuci.domain.enums.Assinatura;
 import io.github.dudupuci.domain.enums.TipoDocumento;
 import io.github.dudupuci.infrastructure.configuration.annotations.CpfOuCnpj;
@@ -48,4 +49,8 @@ public class ClienteJpaEntity extends PessoaJpaEntity {
 
     @Column(name = "is_ativo")
     private Boolean isAtivo = true;
+
+    public Cliente toDomain() {
+        return new Cliente();
+    }
 }

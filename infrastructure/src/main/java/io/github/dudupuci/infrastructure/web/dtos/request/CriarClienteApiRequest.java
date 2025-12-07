@@ -1,13 +1,16 @@
 package io.github.dudupuci.infrastructure.web.dtos.request;
 
 import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
+import io.github.dudupuci.domain.enums.Assinatura;
 
 public record CriarClienteApiRequest(
         String nome,
         String sobrenome,
         String sexo,
         String email,
-        String documento,
+        String cpfCnpj,
+        String senha,
+        String confirmacaoSenha,
         String telefone,
         String sobre
 ) {
@@ -17,7 +20,9 @@ public record CriarClienteApiRequest(
                 this.sobrenome,
                 this.sexo,
                 this.email,
-                this.documento,
+                this.cpfCnpj,
+                this.senha,
+                this.confirmacaoSenha,
                 this.telefone,
                 this.sobre
         );

@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.persistence.facade;
+package io.github.dudupuci.infrastructure.persistence.facade.empresas;
 
 import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpresaInput;
 import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpresaUseCase;
@@ -42,8 +42,13 @@ public class EmpresaFacadeImpl implements EmpresaFacade {
     }
 
     @Override
-    public BuscarEmpresaOutput buscar(Long input) {
+    public BuscarEmpresaOutput buscar(BuscarEmpresaInput input) {
         return this.buscarEmpresaUseCase.execute(input);
+    }
+
+    @Override
+    public BuscarEmpresaOutput buscarPorEmail(String email) {
+        return null;
     }
 
     @Override

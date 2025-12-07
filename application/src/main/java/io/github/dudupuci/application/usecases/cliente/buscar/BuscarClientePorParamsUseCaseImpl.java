@@ -1,6 +1,5 @@
 package io.github.dudupuci.application.usecases.cliente.buscar;
 
-import io.github.dudupuci.application.params.BuscarClienteParams;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 
 public class BuscarClientePorParamsUseCaseImpl extends BuscarClientePorParamsUseCase {
@@ -12,8 +11,12 @@ public class BuscarClientePorParamsUseCaseImpl extends BuscarClientePorParamsUse
     }
 
     @Override
-    public BuscarClienteOutput execute(BuscarClienteParams buscarClienteParams) {
-        return null;
+    public BuscarClienteOutput execute(String email) {
+        var cliente = this.clienteRepository.buscarPorEmail(email).orElseThrow(() ->
+                new RuntimeException("Cliente não encontrado com o email: " + email));
+
+        return BuscarClienteOutput.fromDomain(cliente);
+
     }
 }
 

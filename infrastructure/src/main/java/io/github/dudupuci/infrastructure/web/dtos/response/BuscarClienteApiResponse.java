@@ -15,9 +15,9 @@ public record BuscarClienteApiResponse(
         return new BuscarClienteApiResponse(
                 applicationOutput.id(),
                 applicationOutput.nome(),
-                applicationOutput.sexo().toString(),
+                applicationOutput.sexo(),
                 applicationOutput.email(),
-                applicationOutput.documento(),
+                applicationOutput.cpfCnpj(),
                 applicationOutput.telefone(),
                 applicationOutput.sobre()
         );

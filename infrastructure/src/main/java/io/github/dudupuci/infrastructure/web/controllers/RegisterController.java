@@ -1,36 +1,37 @@
 package io.github.dudupuci.infrastructure.web.controllers;
 
-import io.github.dudupuci.infrastructure.web.dtos.request.RegistrarClienteRequest;
-import io.github.dudupuci.infrastructure.web.dtos.request.RegistrarEmpresaRequest;
+import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
+import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteOutput;
+import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaInput;
+import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaOutput;
+import io.github.dudupuci.infrastructure.persistence.facade.registrar.RegistrarFacade;
+import io.github.dudupuci.infrastructure.web.dtos.request.CriarClienteApiRequest;
+import io.github.dudupuci.infrastructure.web.dtos.request.CriarEmpresaApiRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.net.URI;
-import java.util.Base64;
-
 
 @RestController
 @RequestMapping("/registrar")
 public class RegisterController {
 
+    private final RegistrarFacade registrarFacade;
 
-    /**
-     * Codifica senha com Base64 simples
-     */
-    private String encodePassword(String password) {
-        return Base64.getEncoder().encodeToString(password.getBytes());
+    public RegisterController(RegistrarFacade registrarFacade) {
+        this.registrarFacade = registrarFacade;
     }
 
-
     @PostMapping("/cliente")
-    public ResponseEntity<?> register(@RequestBody RegistrarClienteRequest request) {
+    public ResponseEntity<?> registrarCliente(@RequestBody CriarClienteApiRequest request) {
         try {
+            CriarClienteInput input = request.toApplicationInput();
+            CriarClienteOutput output = this.registrarFacade.registrarCliente(input);
 
-            return ResponseEntity.created(URI.create("/auth/register/" + 1L))
-                    .body("Cliente criado com sucesso. ID: " + 1L);
+            return ResponseEntity.created(URI.create("/auth/register/" + output.id()))
+                    .body("Cliente criado com sucesso. ID: " + output.id());
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao registrar: " + e.getMessage());
@@ -38,11 +39,13 @@ public class RegisterController {
     }
 
     @PostMapping("/empresa")
-    public ResponseEntity<?> register(@RequestBody RegistrarEmpresaRequest request) {
+    public ResponseEntity<?> registrarEmpresa(@RequestBody CriarEmpresaApiRequest request) {
         try {
+            CriarEmpresaInput input = request.toApplicationInput();
+            CriarEmpresaOutput output = this.registrarFacade.registrarEmpresa(input);
 
-            return ResponseEntity.created(URI.create("/auth/register/" + 1L))
-                    .body("Empresa criada com sucesso. ID: " + 1L);
+            return ResponseEntity.created(URI.create("/auth/register/" + output.id()))
+                    .body("Empresa criada com sucesso. ID: " + output.id());
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao registrar: " + e.getMessage());

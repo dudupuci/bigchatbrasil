@@ -1,14 +1,11 @@
 package io.github.dudupuci.infrastructure.web.controllers;
 
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
-import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
-import io.github.dudupuci.infrastructure.persistence.facade.ClienteFacade;
+import io.github.dudupuci.infrastructure.persistence.facade.clientes.ClienteFacade;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.ClientesControllerAPI;
 import io.github.dudupuci.infrastructure.web.dtos.request.AtualizarClienteApiRequest;
-import io.github.dudupuci.infrastructure.web.dtos.request.CriarClienteApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.response.AtualizarClienteApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.BuscarClienteApiResponse;
-import io.github.dudupuci.infrastructure.web.dtos.response.CriarClienteApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,26 +19,11 @@ public class ClientesController implements ClientesControllerAPI {
         this.clienteFacade = clienteFacade;
     }
 
-    @PostMapping
-    public ResponseEntity<?> criar(@RequestBody CriarClienteApiRequest request) {
-        try {
-            CriarClienteInput input = request.toApplicationInput();
-
-            CriarClienteApiResponse apiResponse = CriarClienteApiResponse.toApiResponse(
-                    this.clienteFacade.criar(input)
-            );
-
-            return ResponseEntity.ok(apiResponse);
-        } catch (Exception err) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
             BuscarClienteApiResponse apiResponse = BuscarClienteApiResponse.toApiResponse(
-                    this.clienteFacade.buscar(id)
+                    this.clienteFacade.buscarPorId(id)
             );
             return ResponseEntity.ok(apiResponse);
         } catch (Exception err) {

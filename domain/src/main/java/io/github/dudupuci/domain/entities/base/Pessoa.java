@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class Pessoa extends Entidade<Long> {
+public abstract class Pessoa extends Entidade {
     protected String nome;
     protected String sobrenome;
     protected Sexo sexo;
