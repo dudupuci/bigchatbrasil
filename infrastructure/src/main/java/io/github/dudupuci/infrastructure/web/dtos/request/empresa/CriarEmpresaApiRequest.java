@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.web.dtos.request;
+package io.github.dudupuci.infrastructure.web.dtos.request.empresa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaInput;

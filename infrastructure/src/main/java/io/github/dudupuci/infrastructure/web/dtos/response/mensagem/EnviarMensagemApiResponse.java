@@ -1,7 +1,6 @@
-package io.github.dudupuci.infrastructure.web.dtos.response;
+package io.github.dudupuci.infrastructure.web.dtos.response.mensagem;
 
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemOutput;
-import io.github.dudupuci.domain.entities.Mensagem;
 
 import java.time.Instant;
 import java.util.UUID;

@@ -1,32 +1,32 @@
-package io.github.dudupuci.infrastructure.web.dtos.request;
+package io.github.dudupuci.infrastructure.web.dtos.request.cliente;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
+import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
 
-public record AtualizarClienteApiRequest(
+public record CriarClienteApiRequest(
         String nome,
         String sobrenome,
         String sexo,
         String email,
         @JsonProperty(value = "cpf_cnpj")
         String cpfCnpj,
-        @JsonProperty(value = "tipo_documento")
-        String tipoDocumento,
+        String senha,
+        @JsonProperty(value = "confirmacao_senha")
+        String confirmacaoSenha,
         String telefone,
         String sobre
 ) {
-    public AtualizarClienteInput toApplicationInput(Long id) {
-        return new AtualizarClienteInput(
-                id,
+    public CriarClienteInput toApplicationInput() {
+        return new CriarClienteInput(
                 this.nome,
                 this.sobrenome,
                 this.sexo,
                 this.email,
                 this.cpfCnpj,
-                this.tipoDocumento,
+                this.senha,
+                this.confirmacaoSenha,
                 this.telefone,
                 this.sobre
         );
     }
 }
-

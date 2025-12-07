@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.web.dtos.response;
+package io.github.dudupuci.infrastructure.web.dtos.response.cliente;
 
 import io.github.dudupuci.application.usecases.cliente.buscar.BuscarClienteOutput;
 

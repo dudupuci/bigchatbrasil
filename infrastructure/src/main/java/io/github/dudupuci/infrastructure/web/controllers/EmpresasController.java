@@ -4,9 +4,9 @@ import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpres
 import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaInput;
 import io.github.dudupuci.infrastructure.persistence.facade.empresas.EmpresaFacade;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.EmpresasControllerAPI;
-import io.github.dudupuci.infrastructure.web.dtos.request.AtualizarEmpresaApiRequest;
-import io.github.dudupuci.infrastructure.web.dtos.response.AtualizarEmpresaApiResponse;
-import io.github.dudupuci.infrastructure.web.dtos.response.BuscarEmpresaApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.request.empresa.AtualizarEmpresaApiRequest;
+import io.github.dudupuci.infrastructure.web.dtos.response.empresa.AtualizarEmpresaApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.response.empresa.BuscarEmpresaApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

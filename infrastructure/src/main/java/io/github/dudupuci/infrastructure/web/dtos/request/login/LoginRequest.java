@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.web.dtos.request;
+package io.github.dudupuci.infrastructure.web.dtos.request.login;
 
 import io.github.dudupuci.domain.enums.TipoUsuario;
 

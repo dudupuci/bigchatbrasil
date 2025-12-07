@@ -6,12 +6,12 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: update  # ⚠️ TEMPORÁRIO: Vai dropar e recriar todas as tabelas
+            ddl-auto: create-drop  # ⚠️ TEMPORÁRIO: Vai dropar e recriar todas as tabelas
         show-sql: true
         properties:
             hibernate:
                 format_sql: true
-                # Garante que o Hibernate use IDENTITY corretamente
+
                 id:
                     new_generator_mappings: true
 

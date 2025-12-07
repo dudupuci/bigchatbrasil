@@ -7,9 +7,7 @@ import io.github.dudupuci.domain.validators.BcbEntityValidator;
 import io.github.dudupuci.infrastructure.persistence.facade.clientes.ClienteFacade;
 import io.github.dudupuci.infrastructure.persistence.facade.empresas.EmpresaFacade;
 import io.github.dudupuci.infrastructure.security.SimpleSessionManager;
-import io.github.dudupuci.infrastructure.web.dtos.request.LoginRequest;
-import io.github.dudupuci.infrastructure.web.dtos.response.AuthResponse;
-import org.springframework.http.ResponseEntity;
+import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -45,6 +43,12 @@ public class LoginFacadeImpl implements LoginFacade {
         return Base64.getEncoder().encodeToString(password.getBytes());
     }
 
+    /**
+     * Realiza login de CLIENTE ou EMPRESA
+     * <p>Guarda sessão com tipo de usuário</p>
+     * @param request
+     * @return
+     */
     @Override
     public String doLogin(LoginRequest request) {
         String sessionId = null;
@@ -53,6 +57,7 @@ public class LoginFacadeImpl implements LoginFacade {
             BuscarClienteOutput cliente = clienteFacade.buscarPorEmail(request.email());
 
             if (BcbEntityValidator.isEntityNotNull(cliente.toDomain())) {
+
                 if (!matchPassword(request.senha(), cliente.senha())) {
                     throw new RuntimeException("Credenciais inválidas");
                 }

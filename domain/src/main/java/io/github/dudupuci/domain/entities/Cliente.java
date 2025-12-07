@@ -2,6 +2,7 @@ package io.github.dudupuci.domain.entities;
 
 import io.github.dudupuci.domain.entities.base.Pessoa;
 import io.github.dudupuci.domain.enums.Assinatura;
+import io.github.dudupuci.domain.enums.Sexo;
 import io.github.dudupuci.domain.enums.TipoDocumento;
 import io.github.dudupuci.domain.enums.TipoOperacao;
 import io.github.dudupuci.domain.validators.BcbEntityValidator;

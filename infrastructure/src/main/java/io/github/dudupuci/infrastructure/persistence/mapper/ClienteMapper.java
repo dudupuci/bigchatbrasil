@@ -16,11 +16,6 @@ public class ClienteMapper {
 
         ClienteJpaEntity jpaEntity = new ClienteJpaEntity();
 
-        // ⚠️ IMPORTANTE: NUNCA setamos o ID aqui!
-        // O JPA com @GeneratedValue gerencia o ID automaticamente
-        // Para criação: ID é null, PostgreSQL gera via SERIAL
-        // Para atualização: Usamos findById() + setters, não recriamos a entidade
-
         // Campos de Pessoa
         jpaEntity.setNome(cliente.getNome());
         jpaEntity.setSobrenome(cliente.getSobrenome());
@@ -36,7 +31,7 @@ public class ClienteMapper {
         jpaEntity.setTelefone(cliente.getTelefone());
         jpaEntity.setSobre(cliente.getSobre());
         jpaEntity.setSenha(cliente.getSenha());
-        jpaEntity.setIsAtivo(cliente.getIsAtivo() != null ? cliente.getIsAtivo() : true);
+        jpaEntity.setIsAtivo(cliente.getIsAtivo());
 
         // Data de criação e atualização
         if (cliente.getDataCriacao() != null) {

@@ -4,8 +4,8 @@ import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInp
 import io.github.dudupuci.infrastructure.persistence.facade.mensagens.MensagemFacade;
 import io.github.dudupuci.infrastructure.security.SimpleSessionManager;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.MensagensControllerAPI;
-import io.github.dudupuci.infrastructure.web.dtos.request.EnviarMensagemRequest;
-import io.github.dudupuci.infrastructure.web.dtos.response.EnviarMensagemApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.request.mensagem.EnviarMensagemRequest;
+import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.EnviarMensagemApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

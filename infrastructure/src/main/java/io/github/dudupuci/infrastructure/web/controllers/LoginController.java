@@ -2,8 +2,8 @@ package io.github.dudupuci.infrastructure.web.controllers;
 
 import io.github.dudupuci.infrastructure.persistence.facade.login.LoginFacade;
 import io.github.dudupuci.infrastructure.security.SimpleSessionManager;
-import io.github.dudupuci.infrastructure.web.dtos.request.LoginRequest;
-import io.github.dudupuci.infrastructure.web.dtos.response.AuthResponse;
+import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginRequest;
+import io.github.dudupuci.infrastructure.web.dtos.response.login.AuthApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class LoginController {
     public ResponseEntity<?> doLogin(@RequestBody LoginRequest request) {
         try {
             String sessionId = loginFacade.doLogin(request);
-            return ResponseEntity.ok(AuthResponse.of(sessionId));
+            return ResponseEntity.ok(AuthApiResponse.of(sessionId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Credenciais inválidas: " + e.getMessage());
         }

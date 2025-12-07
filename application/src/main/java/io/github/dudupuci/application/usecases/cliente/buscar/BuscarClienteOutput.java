@@ -2,10 +2,12 @@ package io.github.dudupuci.application.usecases.cliente.buscar;
 
 
 import io.github.dudupuci.domain.entities.Cliente;
+import io.github.dudupuci.domain.enums.Sexo;
 
 public record BuscarClienteOutput(
         Long id,
         String nome,
+        String sobrenome,
         String sexo,
         String email,
         String cpfCnpj,
@@ -18,17 +20,28 @@ public record BuscarClienteOutput(
         return new BuscarClienteOutput(
                 cliente.getId(),
                 cliente.getNome(),
+                cliente.getSobrenome(),
                 cliente.getSexo().toString(),
                 cliente.getEmail(),
                 cliente.getCpfCnpj(),
                 cliente.getTelefone(),
                 cliente.getSobre(),
-                null
+                cliente.getSenha()
         );
     }
 
+
     public Cliente toDomain() {
-        return new Cliente();
+        Cliente cliente = new Cliente();
+        cliente.setId(this.id);
+        cliente.setNome(this.nome);
+        cliente.setSobrenome(this.sobrenome);
+        cliente.setSexo(this.sexo != null ? Sexo.fromDescricao(this.sexo) : null);
+        cliente.setEmail(this.email);
+        cliente.setCpfCnpj(this.cpfCnpj);
+        cliente.setTelefone(this.telefone);
+        cliente.setSobre(this.sobre);
+        return cliente;
     }
 }
 

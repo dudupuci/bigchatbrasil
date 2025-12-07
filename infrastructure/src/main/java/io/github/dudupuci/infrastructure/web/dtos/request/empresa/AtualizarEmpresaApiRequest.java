@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.web.dtos.request;
+package io.github.dudupuci.infrastructure.web.dtos.request.empresa;
 
 import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpresaInput;
 

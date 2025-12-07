@@ -5,6 +5,7 @@ import io.github.dudupuci.domain.enums.Assinatura;
 import io.github.dudupuci.domain.enums.TipoDocumento;
 import io.github.dudupuci.infrastructure.configuration.annotations.CpfOuCnpj;
 import io.github.dudupuci.infrastructure.persistence.base.PessoaJpaEntity;
+import io.github.dudupuci.infrastructure.validation.groups.OnCreate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,10 +23,10 @@ import java.math.BigDecimal;
 public class ClienteJpaEntity extends PessoaJpaEntity {
 
     @Column(nullable = false, unique = true)
-    @Email(message = "Email inválido")
+    @Email(message = "Email inválido", groups = OnCreate.class)
     private String email;
 
-    @CpfOuCnpj
+    @CpfOuCnpj(groups = OnCreate.class)
     @Column(unique = true)
     private String cpfCnpj;
 
@@ -39,10 +40,8 @@ public class ClienteJpaEntity extends PessoaJpaEntity {
 
     private BigDecimal limite;
 
-    @Column(nullable = false)
     private String telefone;
 
-    @NotBlank(message = "O campo 'sobre' não pode estar em branco")
     private String sobre;
 
     private String senha;

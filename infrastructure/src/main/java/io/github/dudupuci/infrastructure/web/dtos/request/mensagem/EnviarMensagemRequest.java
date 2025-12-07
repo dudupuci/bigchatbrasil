@@ -1,4 +1,4 @@
-package io.github.dudupuci.infrastructure.web.dtos.request;
+package io.github.dudupuci.infrastructure.web.dtos.request.mensagem;
 
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInput;
 
