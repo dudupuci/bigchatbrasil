@@ -6,7 +6,7 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: create-drop  # ⚠️ TEMPORÁRIO: Vai dropar e recriar todas as tabelas
+            ddl-auto: update  # ⚠️ TEMPORÁRIO: Vai dropar e recriar todas as tabelas
         show-sql: true
         properties:
             hibernate:

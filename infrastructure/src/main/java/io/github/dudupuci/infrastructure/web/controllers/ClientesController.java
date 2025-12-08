@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/clientes")
-@RequiresAuth  // ✅ Todos os endpoints de clientes requerem autenticação
+@RequiresAuth
 public class ClientesController implements ClientesControllerAPI {
 
     private final ClienteFacade clienteFacade;
@@ -23,7 +23,7 @@ public class ClientesController implements ClientesControllerAPI {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(
-            @RequestHeader(value = "X-Session-Id") String sessionId,
+            @RequestHeader("X-Session-Id") String sessionId,
             @PathVariable Long id
     ) {
         try {

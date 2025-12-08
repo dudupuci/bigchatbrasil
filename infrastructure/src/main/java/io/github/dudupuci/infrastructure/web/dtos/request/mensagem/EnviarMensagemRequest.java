@@ -4,6 +4,10 @@ import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInp
 
 import java.util.UUID;
 
+/**
+ * Request para enviar mensagem
+ * conversaId é OPCIONAL - se não enviado, será gerado automaticamente
+ */
 public record EnviarMensagemRequest(
         UUID conversaId,
         Long destinatarioId,

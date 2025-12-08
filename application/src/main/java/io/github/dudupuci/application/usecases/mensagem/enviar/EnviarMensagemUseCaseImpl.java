@@ -1,6 +1,7 @@
 package io.github.dudupuci.application.usecases.mensagem.enviar;
 
 import io.github.dudupuci.domain.entities.Mensagem;
+import io.github.dudupuci.domain.enums.TipoUsuario;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.domain.repositories.MensagemRepository;
@@ -11,6 +12,8 @@ public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
     private final MensagemRepository mensagemRepository;
     private final ClienteRepository clienteRepository;
     private final EmpresaRepository empresaRepository;
+    private TipoUsuario tipoRemetente;
+    private TipoUsuario tipoDestinatario;
 
     public EnviarMensagemUseCaseImpl(MensagemRepository mensagemRepository, ClienteRepository clienteRepository, EmpresaRepository empresaRepository) {
         this.mensagemRepository = mensagemRepository;
@@ -62,6 +65,7 @@ public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
         if (!remetenteExiste) {
             throw new IllegalArgumentException("Remetente com ID " + remetenteId + " não encontrado");
         }
+
     }
 
     private void validarDestinatario(Long destinatarioId) {
