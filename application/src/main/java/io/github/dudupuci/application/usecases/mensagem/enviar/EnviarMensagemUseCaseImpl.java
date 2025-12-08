@@ -26,11 +26,7 @@ public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
 
         validarConteudo(input.conteudo());
 
-        validarRemetente(input.remetenteId());
-
-        validarDestinatario(input.destinatarioId());
-
-        validarRemetenteDestinatarioDiferentes(input.remetenteId(), input.destinatarioId());
+        validarRemetenteAndDestinatario(input.remetenteId(), input.destinatarioId());
 
         Mensagem mensagem = EnviarMensagemInput.criarEntidade(input);
 
@@ -54,35 +50,31 @@ public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
         }
     }
 
-    private void validarRemetente(Long remetenteId) {
+    private void validarRemetenteAndDestinatario(Long remetenteId, Long destinatarioId) {
         if (remetenteId == null) {
             throw new IllegalArgumentException("Remetente não pode ser nulo");
         }
 
-        boolean remetenteExiste = clienteRepository.buscarPorId(remetenteId).isPresent() ||
-                empresaRepository.buscarPorId(remetenteId).isPresent();
-
-        if (!remetenteExiste) {
-            throw new IllegalArgumentException("Remetente com ID " + remetenteId + " não encontrado");
-        }
-
-    }
-
-    private void validarDestinatario(Long destinatarioId) {
         if (destinatarioId == null) {
             throw new IllegalArgumentException("Destinatário não pode ser nulo");
         }
 
-        boolean destinatarioExiste = clienteRepository.buscarPorId(destinatarioId).isPresent() ||
-                empresaRepository.buscarPorId(destinatarioId).isPresent();
-
-        if (!destinatarioExiste) {
-            throw new IllegalArgumentException("Destinatário com ID " + destinatarioId + " não encontrado");
+        if (!remetenteId.equals(destinatarioId)) {
+            return;
         }
-    }
 
-    private void validarRemetenteDestinatarioDiferentes(Long remetenteId, Long destinatarioId) {
-        if (remetenteId.equals(destinatarioId)) {
+        // IDs iguais - precisa verificar se são do mesmo tipo
+        boolean remetenteCliente = clienteRepository.buscarPorId(remetenteId).isPresent();
+        boolean destinatarioCliente = clienteRepository.buscarPorId(destinatarioId).isPresent();
+
+        if (remetenteCliente && destinatarioCliente) {
+            throw new IllegalArgumentException("Remetente e destinatário não podem ser a mesma pessoa");
+        }
+
+        boolean remetenteEmpresa = empresaRepository.buscarPorId(remetenteId).isPresent();
+        boolean destinatarioEmpresa = empresaRepository.buscarPorId(destinatarioId).isPresent();
+
+        if (remetenteEmpresa && destinatarioEmpresa) {
             throw new IllegalArgumentException("Remetente e destinatário não podem ser a mesma pessoa");
         }
     }
