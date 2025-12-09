@@ -2,13 +2,17 @@ package io.github.dudupuci.infrastructure.web.controllers;
 
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInput;
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemOutput;
+import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensInput;
+import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensOutput;
+import io.github.dudupuci.infrastructure.persistence.facade.mensagens.MensagemFacade;
 import io.github.dudupuci.infrastructure.queue.FilaMensagens;
 import io.github.dudupuci.infrastructure.queue.ProcessadorMensagens;
-import io.github.dudupuci.infrastructure.security.RequiresAuth;
+import io.github.dudupuci.infrastructure.security.annotations.RequiresAuth;
 import io.github.dudupuci.infrastructure.security.SessionInfo;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.MensagensControllerAPI;
-import io.github.dudupuci.infrastructure.web.dtos.request.mensagem.EnviarMensagemRequest;
+import io.github.dudupuci.infrastructure.web.dtos.request.mensagem.EnviarMensagemApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.EnviarMensagemApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarMensagensApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +37,16 @@ public class MensagensController implements MensagensControllerAPI {
 
     private final FilaMensagens filaMensagens;
     private final ProcessadorMensagens processadorMensagens;
+    private final MensagemFacade mensagemFacade;
 
     public MensagensController(
             FilaMensagens filaMensagens,
-            ProcessadorMensagens processadorMensagens
+            ProcessadorMensagens processadorMensagens,
+            MensagemFacade mensagemFacade
     ) {
         this.filaMensagens = filaMensagens;
         this.processadorMensagens = processadorMensagens;
+        this.mensagemFacade = mensagemFacade;
     }
 
     /**
@@ -53,7 +60,7 @@ public class MensagensController implements MensagensControllerAPI {
      */
     @PostMapping
     public ResponseEntity<?> enviarMensagem(
-            @RequestBody EnviarMensagemRequest request,
+            @RequestBody EnviarMensagemApiRequest request,
             HttpServletRequest httpRequest
     ) {
         try {
@@ -62,14 +69,15 @@ public class MensagensController implements MensagensControllerAPI {
             SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
             Long remetenteId = sessionInfo.idUsuario();
 
-            logger.info("📨 Recebendo mensagem de {} (tipo: {}) para destinatário {} | Prioridade: {}",
+            logger.info("📨 Recebendo mensagem de {} (tipo: {}) para destinatário {} (tipo: {}) | Prioridade: {}",
                     remetenteId,
                     sessionInfo.tipoUsuario(),
                     request.destinatarioId(),
+                    request.tipoDestinatario(),
                     request.prioridade());
 
-            // Cria o input com o remetente autenticado
-            EnviarMensagemInput input = request.toApplicationInput(remetenteId);
+            // Cria o input com o remetente autenticado (ID + Tipo)
+            EnviarMensagemInput input = request.toApplicationInput(remetenteId, sessionInfo.tipoUsuario());
 
             // ✅ PARTE 1 & 2: ENFILEIRA com priorização
             UUID idFila = filaMensagens.enfileirar(input);
@@ -117,14 +125,35 @@ public class MensagensController implements MensagensControllerAPI {
      */
     @GetMapping("/conversa/{conversaId}")
     public ResponseEntity<?> listarMensagensDaConversa(
-            @PathVariable UUID conversaId
+            @PathVariable UUID conversaId,
+            HttpServletRequest httpRequest
     ) {
         try {
-            // TODO: Implementar quando tiver caso de uso de listar mensagens
-            logger.info("📋 Listando mensagens da conversa: {}", conversaId);
-            return ResponseEntity.ok("Implementar ListarMensagensUseCase");
+            // Pega o usuário autenticado da sessão
+            SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
+            Long usuarioId = sessionInfo.idUsuario();
+
+            logger.info("📋 Listando mensagens da conversa: {} | Usuário: {}", conversaId, usuarioId);
+
+            // Cria o input com validação de permissão
+            ListarMensagensInput input = new ListarMensagensInput(conversaId, usuarioId);
+
+            // Executa o caso de uso
+            ListarMensagensOutput output = mensagemFacade.listarMensagens(input);
+
+            // Converte para response da API
+            ListarMensagensApiResponse response = ListarMensagensApiResponse.toApiResponse(output);
+
+            logger.info("✅ Listadas {} mensagens da conversa {}", output.total(), conversaId);
+
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            logger.warn("⚠️ Erro de validação: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Erro de validação: " + e.getMessage());
         } catch (Exception e) {
-            logger.error("Erro ao listar mensagens da conversa {}", conversaId, e);
+            logger.error("❌ Erro ao listar mensagens da conversa {}", conversaId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao listar mensagens: " + e.getMessage());
         }

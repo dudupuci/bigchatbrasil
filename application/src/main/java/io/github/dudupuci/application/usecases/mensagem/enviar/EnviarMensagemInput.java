@@ -4,6 +4,7 @@ import io.github.dudupuci.domain.entities.Mensagem;
 import io.github.dudupuci.domain.enums.PrioridadeNotificacao;
 import io.github.dudupuci.domain.enums.StatusNotificacao;
 import io.github.dudupuci.domain.enums.TipoNotificacao;
+import io.github.dudupuci.domain.enums.TipoUsuario;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,9 @@ import java.util.UUID;
 public record EnviarMensagemInput(
         UUID conversaId,
         Long remetenteId,
+        TipoUsuario tipoRemetente,
         Long destinatarioId,
+        TipoUsuario tipoDestinatario,
         String conteudo,
         String tipo,
         String prioridade

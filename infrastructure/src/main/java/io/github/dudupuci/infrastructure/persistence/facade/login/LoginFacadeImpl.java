@@ -7,7 +7,7 @@ import io.github.dudupuci.domain.validators.BcbEntityValidator;
 import io.github.dudupuci.infrastructure.persistence.facade.clientes.ClienteFacade;
 import io.github.dudupuci.infrastructure.persistence.facade.empresas.EmpresaFacade;
 import io.github.dudupuci.infrastructure.security.SimpleSessionManager;
-import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginRequest;
+import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginApiRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -50,7 +50,7 @@ public class LoginFacadeImpl implements LoginFacade {
      * @return
      */
     @Override
-    public String doLogin(LoginRequest request) {
+    public String doLogin(LoginApiRequest request) {
         String sessionId = null;
 
         if (TipoUsuario.CLIENTE.equals(request.tipo())) {

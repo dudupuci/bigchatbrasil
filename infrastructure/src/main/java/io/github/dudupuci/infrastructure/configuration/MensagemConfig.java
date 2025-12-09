@@ -2,6 +2,8 @@ package io.github.dudupuci.infrastructure.configuration;
 
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemUseCase;
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemUseCaseImpl;
+import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensUseCase;
+import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensUseCaseImpl;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.domain.repositories.MensagemRepository;
@@ -32,6 +34,11 @@ public class MensagemConfig {
                 clienteRepository,
                 empresaRepository
         );
+    }
+
+    @Bean
+    public ListarMensagensUseCase listarMensagensUseCase() {
+        return new ListarMensagensUseCaseImpl(mensagemRepository);
     }
 }
 

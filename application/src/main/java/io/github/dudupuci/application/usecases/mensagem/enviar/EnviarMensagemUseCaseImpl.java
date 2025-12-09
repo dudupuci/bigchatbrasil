@@ -1,5 +1,6 @@
 package io.github.dudupuci.application.usecases.mensagem.enviar;
 
+import io.github.dudupuci.domain.constants.BcbConstants;
 import io.github.dudupuci.domain.entities.Mensagem;
 import io.github.dudupuci.domain.enums.TipoUsuario;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
@@ -7,13 +8,11 @@ import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.domain.repositories.MensagemRepository;
 
 
-public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
+public class  EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
 
     private final MensagemRepository mensagemRepository;
     private final ClienteRepository clienteRepository;
     private final EmpresaRepository empresaRepository;
-    private TipoUsuario tipoRemetente;
-    private TipoUsuario tipoDestinatario;
 
     public EnviarMensagemUseCaseImpl(MensagemRepository mensagemRepository, ClienteRepository clienteRepository, EmpresaRepository empresaRepository) {
         this.mensagemRepository = mensagemRepository;
@@ -26,7 +25,7 @@ public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
 
         validarConteudo(input.conteudo());
 
-        validarRemetenteAndDestinatario(input.remetenteId(), input.destinatarioId());
+        validarRemetenteAndDestinatario(input);
 
         Mensagem mensagem = EnviarMensagemInput.criarEntidade(input);
 
@@ -50,32 +49,40 @@ public class EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
         }
     }
 
-    private void validarRemetenteAndDestinatario(Long remetenteId, Long destinatarioId) {
-        if (remetenteId == null) {
-            throw new IllegalArgumentException("Remetente não pode ser nulo");
+    /**
+     * Valida que remetente e destinatário são diferentes
+     * Compara ID + Tipo para evitar falso positivo (ex: Cliente#1 != Empresa#1)
+     * @param input
+     */
+    private void validarRemetenteAndDestinatario(EnviarMensagemInput input) {
+        if (input.remetenteId() == null || input.tipoRemetente() == null) {
+            throw new IllegalArgumentException("Remetente/Tipo do Remetente não pode ser nulo");
         }
 
-        if (destinatarioId == null) {
-            throw new IllegalArgumentException("Destinatário não pode ser nulo");
+        if (input.destinatarioId() == null || input.tipoDestinatario() == null) {
+            throw new IllegalArgumentException("Destinatário/Tipo do Destinatário não pode ser nulo");
         }
 
-        if (!remetenteId.equals(destinatarioId)) {
-            return;
-        }
+        boolean mesmoId = input.remetenteId().equals(input.destinatarioId());
+        boolean mesmoTipo = input.tipoRemetente().equals(input.tipoDestinatario());
 
-        // IDs iguais - precisa verificar se são do mesmo tipo
-        boolean remetenteCliente = clienteRepository.buscarPorId(remetenteId).isPresent();
-        boolean destinatarioCliente = clienteRepository.buscarPorId(destinatarioId).isPresent();
-
-        if (remetenteCliente && destinatarioCliente) {
+        if (mesmoId && mesmoTipo) {
             throw new IllegalArgumentException("Remetente e destinatário não podem ser a mesma pessoa");
         }
 
-        boolean remetenteEmpresa = empresaRepository.buscarPorId(remetenteId).isPresent();
-        boolean destinatarioEmpresa = empresaRepository.buscarPorId(destinatarioId).isPresent();
+        validarExistenciaUsuario(input.remetenteId(), input.tipoRemetente(), BcbConstants.REMETENTE);
+        validarExistenciaUsuario(input.destinatarioId(), input.tipoDestinatario(), BcbConstants.DESTINATARIO);
+    }
 
-        if (remetenteEmpresa && destinatarioEmpresa) {
-            throw new IllegalArgumentException("Remetente e destinatário não podem ser a mesma pessoa");
+    private void validarExistenciaUsuario(Long id, TipoUsuario tipo, String papel) {
+        boolean existe = switch (tipo) {
+            case CLIENTE -> clienteRepository.buscarPorId(id).isPresent();
+            case EMPRESA -> empresaRepository.buscarPorId(id).isPresent();
+            default -> false;
+        };
+
+        if (!existe) {
+            throw new IllegalArgumentException(papel + " não encontrado: " + tipo + "#" + id);
         }
     }
 }

@@ -1,6 +1,6 @@
 package io.github.dudupuci.application.usecases.cliente.buscar;
 
-import io.github.dudupuci.application.UseCase;
+import io.github.dudupuci.application.usecases.base.UseCase;
 
 public abstract class BuscarClientePorParamsUseCase extends UseCase<String, BuscarClienteOutput> {
 }

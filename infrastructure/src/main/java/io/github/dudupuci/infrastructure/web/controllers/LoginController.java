@@ -2,7 +2,7 @@ package io.github.dudupuci.infrastructure.web.controllers;
 
 import io.github.dudupuci.infrastructure.persistence.facade.login.LoginFacade;
 import io.github.dudupuci.infrastructure.security.SimpleSessionManager;
-import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginRequest;
+import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.response.login.AuthApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ public class LoginController {
      */
     @PostMapping
     @RequestMapping("/login")
-    public ResponseEntity<?> doLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> doLogin(@RequestBody LoginApiRequest request) {
         try {
             String sessionId = loginFacade.doLogin(request);
             return ResponseEntity.ok(AuthApiResponse.of(sessionId));

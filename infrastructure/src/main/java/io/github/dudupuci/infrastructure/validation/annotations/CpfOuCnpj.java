@@ -1,5 +1,6 @@
-package io.github.dudupuci.infrastructure.configuration.annotations;
+package io.github.dudupuci.infrastructure.validation.annotations;
 
+import io.github.dudupuci.infrastructure.validation.constraints.CpfOuCnpjValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

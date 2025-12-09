@@ -2,7 +2,7 @@ package io.github.dudupuci.infrastructure.web.controllers;
 
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
 import io.github.dudupuci.infrastructure.persistence.facade.clientes.ClienteFacade;
-import io.github.dudupuci.infrastructure.security.RequiresAuth;
+import io.github.dudupuci.infrastructure.security.annotations.RequiresAuth;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.ClientesControllerAPI;
 import io.github.dudupuci.infrastructure.web.dtos.request.cliente.AtualizarClienteApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.response.cliente.AtualizarClienteApiResponse;

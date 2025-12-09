@@ -1,5 +1,6 @@
 package io.github.dudupuci.infrastructure.security;
 
+import io.github.dudupuci.infrastructure.security.annotations.RequiresAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
