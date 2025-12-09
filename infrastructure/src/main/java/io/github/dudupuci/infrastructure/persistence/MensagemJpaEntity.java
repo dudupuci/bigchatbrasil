@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +24,7 @@ public class MensagemJpaEntity extends JpaEntity {
     @Column(name = "conversa_id", nullable = false)
     @NotNull(message = "ID da conversa é obrigatório")
     private UUID conversaId;
+
 
     @Column(name = "remetente_id", nullable = false)
     @NotNull(message = "ID do remetente é obrigatório")

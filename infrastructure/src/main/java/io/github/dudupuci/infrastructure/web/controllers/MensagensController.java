@@ -1,18 +1,24 @@
 package io.github.dudupuci.infrastructure.web.controllers;
 
+import io.github.dudupuci.application.usecases.mensagem.criarconversa.CriarConversaInput;
+import io.github.dudupuci.application.usecases.mensagem.criarconversa.CriarConversaOutput;
+import io.github.dudupuci.application.usecases.mensagem.criarconversa.CriarConversaUseCase;
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInput;
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemOutput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensInput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensOutput;
 import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasInput;
 import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasOutput;
+import io.github.dudupuci.domain.enums.TipoUsuario;
 import io.github.dudupuci.infrastructure.persistence.facade.mensagens.MensagemFacade;
 import io.github.dudupuci.infrastructure.queue.FilaMensagens;
 import io.github.dudupuci.infrastructure.queue.ProcessadorMensagens;
 import io.github.dudupuci.infrastructure.security.annotations.RequiresAuth;
 import io.github.dudupuci.infrastructure.security.SessionInfo;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.MensagensControllerAPI;
+import io.github.dudupuci.infrastructure.web.dtos.request.mensagem.CriarConversaApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.request.mensagem.EnviarMensagemApiRequest;
+import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.CriarConversaApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.EnviarMensagemApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarConversasApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarMensagensApiResponse;
@@ -41,15 +47,18 @@ public class MensagensController implements MensagensControllerAPI {
     private final FilaMensagens filaMensagens;
     private final ProcessadorMensagens processadorMensagens;
     private final MensagemFacade mensagemFacade;
+    private final CriarConversaUseCase criarConversaUseCase;
 
     public MensagensController(
             FilaMensagens filaMensagens,
             ProcessadorMensagens processadorMensagens,
-            MensagemFacade mensagemFacade
+            MensagemFacade mensagemFacade,
+            CriarConversaUseCase criarConversaUseCase
     ) {
         this.filaMensagens = filaMensagens;
         this.processadorMensagens = processadorMensagens;
         this.mensagemFacade = mensagemFacade;
+        this.criarConversaUseCase = criarConversaUseCase;
     }
 
     /**
@@ -159,6 +168,53 @@ public class MensagensController implements MensagensControllerAPI {
             logger.error("❌ Erro ao listar mensagens da conversa {}", conversaId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao listar mensagens: " + e.getMessage());
+        }
+    }
+
+    /**
+     * POST /mensagens/conversas
+     * Cria uma conversa entre dois usuários (conversaId determinístico)
+     * Chamado ao adicionar um novo contato, antes de enviar mensagens
+     */
+    @PostMapping("/conversas")
+    public ResponseEntity<?> criarConversa(
+            @RequestBody CriarConversaApiRequest request,
+            HttpServletRequest httpRequest
+    ) {
+        try {
+            // Pega o usuário autenticado
+            SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
+
+            logger.info("📝 Criando conversa entre {} (tipo: {}) e {} (tipo: {})",
+                    sessionInfo.idUsuario(),
+                    sessionInfo.tipoUsuario(),
+                    request.destinatarioId(),
+                    request.tipoDestinatario());
+
+            // Cria o input
+            CriarConversaInput input = new CriarConversaInput(
+                    sessionInfo.idUsuario(),
+                    sessionInfo.tipoUsuario(),
+                    request.destinatarioId(),
+                    TipoUsuario.valueOf(request.tipoDestinatario())
+            );
+
+            // Executa o caso de uso
+            CriarConversaOutput output = criarConversaUseCase.execute(input);
+
+            logger.info("✅ Conversa criada: {}", output.conversaId());
+
+            CriarConversaApiResponse response = CriarConversaApiResponse.toApiResponse(output);
+
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            logger.warn("⚠️ Erro de validação: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("❌ Erro ao criar conversa", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao criar conversa: " + e.getMessage());
         }
     }
 

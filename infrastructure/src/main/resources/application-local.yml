@@ -6,7 +6,8 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: update  # ⚠️ TEMPORÁRIO: Vai dropar e recriar todas as tabelas
+            #ddl-auto: update
+            ddl-auto: create-drop
         show-sql: true
         properties:
             hibernate:
@@ -14,11 +15,6 @@ spring:
 
                 id:
                     new_generator_mappings: true
-
-jwt:
-
-
-
 server:
   port: 8081
 
