@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ClienteJpaRepository extends JpaRepository<ClienteJpaEntity, Long> {
-        Optional<ClienteJpaEntity> findByEmail(String email);
+
+        @Query("SELECT c FROM ClienteJpaEntity c WHERE LOWER(c.email) = LOWER(:email)")
+        Optional<ClienteJpaEntity> findByEmail(@Param("email") String email);
 
         /**
          * Busca cliente por múltiplos critérios (email, CPF/CNPJ, telefone, nome ou sobrenome)
@@ -17,7 +19,7 @@ public interface ClienteJpaRepository extends JpaRepository<ClienteJpaEntity, Lo
          */
         @Query("""
                 SELECT c FROM ClienteJpaEntity c
-                WHERE c.email = :searchTerm
+                WHERE LOWER(c.email) = LOWER(:searchTerm)
                 OR c.cpfCnpj = :searchTerm
                 OR c.telefone = :searchTerm
                 OR LOWER(c.nome) LIKE LOWER(CONCAT('%', :searchTerm, '%'))

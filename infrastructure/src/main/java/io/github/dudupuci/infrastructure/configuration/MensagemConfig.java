@@ -4,6 +4,8 @@ import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemUse
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemUseCaseImpl;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensUseCase;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensUseCaseImpl;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasUseCase;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasUseCaseImpl;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.domain.repositories.MensagemRepository;
@@ -39,6 +41,15 @@ public class MensagemConfig {
     @Bean
     public ListarMensagensUseCase listarMensagensUseCase() {
         return new ListarMensagensUseCaseImpl(mensagemRepository);
+    }
+
+    @Bean
+    public ListarConversasUseCase listarConversasUseCase() {
+        return new ListarConversasUseCaseImpl(
+                mensagemRepository,
+                clienteRepository,
+                empresaRepository
+        );
     }
 }
 

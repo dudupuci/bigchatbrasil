@@ -29,14 +29,23 @@ public class LoginController {
 
     /**
      * Login para usuários
-     * Retorna sessionId no BODY (JSON)
+     * Retorna sessionId e dados do usuário no BODY (JSON)
      */
     @PostMapping
     @RequestMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody LoginApiRequest request) {
         try {
-            String sessionId = loginFacade.doLogin(request);
-            return ResponseEntity.ok(AuthApiResponse.of(sessionId));
+            var loginOutput = loginFacade.doLogin(request);
+
+            AuthApiResponse response = AuthApiResponse.of(
+                    loginOutput.sessionId(),
+                    loginOutput.id(),
+                    loginOutput.nome(),
+                    loginOutput.email(),
+                    loginOutput.tipo()
+            );
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Credenciais inválidas: " + e.getMessage());
         }

@@ -4,8 +4,11 @@ import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInp
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemOutput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensInput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensOutput;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasInput;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasOutput;
 
 public interface MensagemFacade {
     EnviarMensagemOutput enviarMensagem(EnviarMensagemInput input);
     ListarMensagensOutput listarMensagens(ListarMensagensInput input);
+    ListarConversasOutput listarConversas(ListarConversasInput input);
 }

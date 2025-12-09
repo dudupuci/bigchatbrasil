@@ -8,6 +8,7 @@ import io.github.dudupuci.infrastructure.persistence.facade.clientes.ClienteFaca
 import io.github.dudupuci.infrastructure.persistence.facade.empresas.EmpresaFacade;
 import io.github.dudupuci.infrastructure.security.SimpleSessionManager;
 import io.github.dudupuci.infrastructure.web.dtos.request.login.LoginApiRequest;
+import io.github.dudupuci.infrastructure.web.dtos.response.login.LoginOutput;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -47,12 +48,10 @@ public class LoginFacadeImpl implements LoginFacade {
      * Realiza login de CLIENTE ou EMPRESA
      * <p>Guarda sessão com tipo de usuário</p>
      * @param request
-     * @return
+     * @return LoginOutput com sessionId e dados do usuário
      */
     @Override
-    public String doLogin(LoginApiRequest request) {
-        String sessionId = null;
-
+    public LoginOutput doLogin(LoginApiRequest request) {
         if (TipoUsuario.CLIENTE.equals(request.tipo())) {
             BuscarClienteOutput cliente = clienteFacade.buscarPorEmail(request.email());
 
@@ -63,9 +62,16 @@ public class LoginFacadeImpl implements LoginFacade {
                 }
 
                 // Cria sessão identificando como CLIENTE
-                sessionId = sessionManager.createSession(cliente.id(), TipoUsuario.CLIENTE);
-            }
+                String sessionId = sessionManager.createSession(cliente.id(), TipoUsuario.CLIENTE);
 
+                return new LoginOutput(
+                        sessionId,
+                        cliente.id(),
+                        cliente.nome(),
+                        cliente.email(),
+                        TipoUsuario.CLIENTE
+                );
+            }
 
         } else if (TipoUsuario.EMPRESA.equals(request.tipo())) {
             BuscarEmpresaOutput empresa = empresaFacade.buscarPorEmail(request.email());
@@ -76,12 +82,19 @@ public class LoginFacadeImpl implements LoginFacade {
                 }
 
                 // Cria sessão identificando como EMPRESA
-                sessionId = sessionManager.createSession(empresa.id(), TipoUsuario.EMPRESA);
-            }
+                String sessionId = sessionManager.createSession(empresa.id(), TipoUsuario.EMPRESA);
 
+                return new LoginOutput(
+                        sessionId,
+                        empresa.id(),
+                        empresa.razaoSocial(),
+                        empresa.email(),
+                        TipoUsuario.EMPRESA
+                );
+            }
         }
 
-        return sessionId;
+        throw new RuntimeException("Credenciais inválidas");
     }
 
 }

@@ -6,6 +6,9 @@ import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemUse
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensInput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensOutput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensUseCase;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasInput;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasOutput;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,13 +16,16 @@ public class MensagemFacadeImpl implements MensagemFacade{
 
     private final EnviarMensagemUseCase enviarMensagemUseCase;
     private final ListarMensagensUseCase listarMensagensUseCase;
+    private final ListarConversasUseCase listarConversasUseCase;
 
     public MensagemFacadeImpl(
             EnviarMensagemUseCase enviarMensagemUseCase,
-            ListarMensagensUseCase listarMensagensUseCase
+            ListarMensagensUseCase listarMensagensUseCase,
+            ListarConversasUseCase listarConversasUseCase
     ) {
         this.enviarMensagemUseCase = enviarMensagemUseCase;
         this.listarMensagensUseCase = listarMensagensUseCase;
+        this.listarConversasUseCase = listarConversasUseCase;
     }
 
     @Override
@@ -30,5 +36,10 @@ public class MensagemFacadeImpl implements MensagemFacade{
     @Override
     public ListarMensagensOutput listarMensagens(ListarMensagensInput input) {
         return this.listarMensagensUseCase.execute(input);
+    }
+
+    @Override
+    public ListarConversasOutput listarConversas(ListarConversasInput input) {
+        return this.listarConversasUseCase.execute(input);
     }
 }

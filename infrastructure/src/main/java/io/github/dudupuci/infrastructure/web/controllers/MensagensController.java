@@ -4,6 +4,8 @@ import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemInp
 import io.github.dudupuci.application.usecases.mensagem.enviar.EnviarMensagemOutput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensInput;
 import io.github.dudupuci.application.usecases.mensagem.listar.ListarMensagensOutput;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasInput;
+import io.github.dudupuci.application.usecases.mensagem.listarconversas.ListarConversasOutput;
 import io.github.dudupuci.infrastructure.persistence.facade.mensagens.MensagemFacade;
 import io.github.dudupuci.infrastructure.queue.FilaMensagens;
 import io.github.dudupuci.infrastructure.queue.ProcessadorMensagens;
@@ -12,6 +14,7 @@ import io.github.dudupuci.infrastructure.security.SessionInfo;
 import io.github.dudupuci.infrastructure.web.controllers.apidocs.MensagensControllerAPI;
 import io.github.dudupuci.infrastructure.web.dtos.request.mensagem.EnviarMensagemApiRequest;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.EnviarMensagemApiResponse;
+import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarConversasApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarMensagensApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -156,6 +159,42 @@ public class MensagensController implements MensagensControllerAPI {
             logger.error("❌ Erro ao listar mensagens da conversa {}", conversaId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao listar mensagens: " + e.getMessage());
+        }
+    }
+
+    /**
+     * GET /mensagens/conversas
+     * Lista todas as conversas do usuário logado
+     */
+    @GetMapping("/conversas")
+    public ResponseEntity<?> listarConversas(HttpServletRequest httpRequest) {
+        try {
+            // Pega o usuário autenticado da sessão
+            SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
+
+            logger.info("📋 Listando conversas do usuário: {} (tipo: {})",
+                    sessionInfo.idUsuario(), sessionInfo.tipoUsuario());
+
+            // Cria o input
+            ListarConversasInput input = new ListarConversasInput(
+                    sessionInfo.idUsuario(),
+                    sessionInfo.tipoUsuario()
+            );
+
+            // Executa o caso de uso
+            ListarConversasOutput output = mensagemFacade.listarConversas(input);
+
+            // Converte para response da API
+            ListarConversasApiResponse response = ListarConversasApiResponse.toApiResponse(output);
+
+            logger.info("✅ Listadas {} conversas do usuário {}", output.total(), sessionInfo.idUsuario());
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            logger.error("❌ Erro ao listar conversas", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao listar conversas: " + e.getMessage());
         }
     }
 
