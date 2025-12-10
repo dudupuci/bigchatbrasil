@@ -48,9 +48,9 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
         // Busca todas as conversas do usuário da tabela conversas
         List<Conversa> conversas = conversaRepository.buscarPorUsuarioId(input.usuarioId());
 
-        // Cria DTOs de conversas
+        // Cria DTOs de conversas PASSANDO TIPO DO USUÁRIO LOGADO
         List<ConversaDto> conversasDto = conversas.stream()
-                .map(conversa -> criarConversaDto(conversa, input.usuarioId()))
+                .map(conversa -> criarConversaDto(conversa, input.usuarioId(), input.tipoUsuario()))
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(ConversaDto::ultimaMensagemDataHora,
                         Comparator.nullsLast(Comparator.naturalOrder())).reversed())
@@ -59,17 +59,20 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
         return new ListarConversasOutput(conversasDto, conversasDto.size());
     }
 
-    private ConversaDto criarConversaDto(Conversa conversa, Long usuarioLogadoId) {
-        // Identifica o outro usuário da conversa CONSIDERANDO O TIPO!
-        boolean isUsuario1 = conversa.getUsuario1Id().equals(usuarioLogadoId);
+    private ConversaDto criarConversaDto(Conversa conversa, Long usuarioLogadoId, TipoUsuario tipoUsuarioLogado) {
+        // Identifica o outro usuário COMPARANDO ID + TIPO!
+        boolean isUsuario1 = conversa.getUsuario1Id().equals(usuarioLogadoId)
+                && conversa.getUsuario1Tipo().equals(tipoUsuarioLogado);
 
         Long outroUsuarioId;
         TipoUsuario outroUsuarioTipo;
 
         if (isUsuario1) {
+            // Logado é Usuario1, então outro é Usuario2
             outroUsuarioId = conversa.getUsuario2Id();
             outroUsuarioTipo = conversa.getUsuario2Tipo();
         } else {
+            // Logado é Usuario2, então outro é Usuario1
             outroUsuarioId = conversa.getUsuario1Id();
             outroUsuarioTipo = conversa.getUsuario1Tipo();
         }
@@ -78,7 +81,7 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
         System.out.println("  - ConversaId: " + conversa.getConversaId());
         System.out.println("  - Usuario1: " + conversa.getUsuario1Id() + " (" + conversa.getUsuario1Tipo() + ")");
         System.out.println("  - Usuario2: " + conversa.getUsuario2Id() + " (" + conversa.getUsuario2Tipo() + ")");
-        System.out.println("  - UsuarioLogadoId: " + usuarioLogadoId);
+        System.out.println("  - UsuarioLogado: " + usuarioLogadoId + " (" + tipoUsuarioLogado + ")");
         System.out.println("  - OutroUsuario: " + outroUsuarioId + " (" + outroUsuarioTipo + ")");
 
         // Busca mensagens da conversa para pegar última mensagem e contar não lidas
