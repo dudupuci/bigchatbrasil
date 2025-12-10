@@ -33,12 +33,12 @@ public class  EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
 
         return new EnviarMensagemOutput(
                 mensagemSalva.getId(),
+                mensagemSalva.getDataCriacao(),
                 mensagemSalva.getConversaId(),
                 mensagemSalva.getRemetenteId(),
                 mensagemSalva.getDestinatarioId(),
                 mensagemSalva.getConteudo(),
                 mensagemSalva.getStatus(),
-                mensagemSalva.getMomentoEnvio(),
                 true
         );
     }

@@ -7,7 +7,7 @@ import java.util.UUID;
  */
 public record ListarMensagensInput(
         UUID conversaId,
-        Long usuarioId // Para validar que o usuário pertence à conversa
+        Long usuarioId
 ) {
 }
 

@@ -7,12 +7,12 @@ import java.util.UUID;
 
 public record EnviarMensagemOutput(
         Long id,
+        Instant momentoEnvio,
         UUID conversaId,
         Long remetenteId,
         Long destinatarioId,
         String conteudo,
         StatusNotificacao status,
-        Instant momentoEnvio,
         Boolean sucesso
 ) {
 }

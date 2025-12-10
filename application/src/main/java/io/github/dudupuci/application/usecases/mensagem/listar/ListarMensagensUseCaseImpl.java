@@ -39,18 +39,17 @@ public class ListarMensagensUseCaseImpl extends ListarMensagensUseCase {
             throw new IllegalArgumentException("Você não tem permissão para acessar esta conversa");
         }
 
-        // Filtra mensagens válidas (com momentoEnvio não nulo) e converte para DTOs ordenados por data
         List<MensagemDto> mensagensDto = mensagens.stream()
-                .filter(m -> m.getMomentoEnvio() != null) // Filtra mensagens com data válida
-                .sorted(Comparator.comparing(Mensagem::getMomentoEnvio, Comparator.nullsLast(Comparator.naturalOrder())))
+                .filter(m -> m.getDataCriacao() != null) // Filtra mensagens com data válida
+                .sorted(Comparator.comparing(Mensagem::getDataCriacao, Comparator.nullsLast(Comparator.naturalOrder())))
                 .map(m -> new MensagemDto(
                         m.getId(),
                         m.getConversaId(),
                         m.getRemetenteId(),
                         m.getDestinatarioId(),
-                        m.getConteudo() != null ? m.getConteudo() : "", // Garante que conteúdo não seja null
+                        m.getConteudo(),
                         m.getStatus(),
-                        m.getMomentoEnvio()
+                        m.getDataCriacao()
                 ))
                 .toList();
 

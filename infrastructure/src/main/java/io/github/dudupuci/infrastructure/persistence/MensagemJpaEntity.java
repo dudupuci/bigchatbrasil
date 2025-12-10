@@ -7,6 +7,7 @@ import io.github.dudupuci.infrastructure.persistence.base.JpaEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +26,6 @@ public class MensagemJpaEntity extends JpaEntity {
     @NotNull(message = "ID da conversa é obrigatório")
     private UUID conversaId;
 
-
     @Column(name = "remetente_id", nullable = false)
     @NotNull(message = "ID do remetente é obrigatório")
     private Long remetenteId;
@@ -35,6 +35,7 @@ public class MensagemJpaEntity extends JpaEntity {
     private Long destinatarioId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
+    @Size(min = 1)
     @NotBlank(message = "Conteúdo é obrigatório")
     private String conteudo;
 

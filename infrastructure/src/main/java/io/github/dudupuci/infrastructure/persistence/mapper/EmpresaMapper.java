@@ -19,6 +19,7 @@ public class EmpresaMapper {
         jpaEntity.setCnpj(empresa.getCnpj());
         jpaEntity.setTelefone(empresa.getTelefone());
         jpaEntity.setEmail(empresa.getEmail());
+        jpaEntity.setSenha(empresa.getSenha());
 
         if (empresa.getDataCriacao() != null) {
             jpaEntity.setDataCriacao(empresa.getDataCriacao());
@@ -48,7 +49,7 @@ public class EmpresaMapper {
         empresa.setEmail(jpaEntity.getEmail());
         empresa.setDataCriacao(jpaEntity.getDataCriacao());
         empresa.setDataAtualizacao(jpaEntity.getDataAtualizacao());
-
+        empresa.setSenha(jpaEntity.getSenha());
         return empresa;
     }
 }

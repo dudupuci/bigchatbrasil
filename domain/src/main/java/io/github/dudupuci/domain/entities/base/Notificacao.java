@@ -12,7 +12,6 @@ import java.time.Instant;
 @Getter
 @Setter
 public abstract class Notificacao extends Entidade {
-    private Instant momentoEnvio;
     private TipoNotificacao tipo;
     private StatusNotificacao status;
     private PrioridadeNotificacao prioridade;

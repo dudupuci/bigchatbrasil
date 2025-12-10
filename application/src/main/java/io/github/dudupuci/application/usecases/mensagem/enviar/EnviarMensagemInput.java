@@ -32,6 +32,8 @@ public record EnviarMensagemInput(
             conversaIdFinal = gerarConversaId(input.remetenteId(), input.destinatarioId());
         }
 
+        mensagem.setDataCriacao(Instant.now());
+        mensagem.setDataAtualizacao(Instant.now());
         mensagem.setConversaId(conversaIdFinal);
         mensagem.setRemetenteId(input.remetenteId());
         mensagem.setDestinatarioId(input.destinatarioId());
@@ -39,7 +41,6 @@ public record EnviarMensagemInput(
         mensagem.setTipo(TipoNotificacao.valueOf(input.tipo()));
         mensagem.setPrioridade(PrioridadeNotificacao.valueOf(input.prioridade()));
         mensagem.setStatus(StatusNotificacao.PENDENTE);
-        mensagem.setMomentoEnvio(Instant.now());
         mensagem.setCusto(BigDecimal.ZERO);
         return mensagem;
     }

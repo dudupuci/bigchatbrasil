@@ -1,5 +1,7 @@
 package io.github.dudupuci.infrastructure.configuration;
 
+import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaPorParamsUseCase;
+import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaPorParamsUseCaseImpl;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpresaUseCase;
 import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpresaUseCaseImpl;
@@ -34,6 +36,11 @@ public class EmpresaConfig {
     @Bean
     public BuscarEmpresaUseCase buscarEmpresaUseCase() {
         return new BuscarEmpresaUseCaseImpl(repository);
+    }
+
+    @Bean
+    public BuscarEmpresaPorParamsUseCase buscarEmpresaPorParamsUseCase() {
+        return new BuscarEmpresaPorParamsUseCaseImpl(repository);
     }
 
     @Bean

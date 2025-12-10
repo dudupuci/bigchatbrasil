@@ -18,7 +18,7 @@ public record BuscarEmpresaOutput(
                 empresa.getCnpj(),
                 empresa.getTelefone(),
                 empresa.getEmail(),
-                null
+                empresa.getSenha()
         );
     }
 

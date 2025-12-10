@@ -99,7 +99,7 @@ public class MessageQueueManager {
 
             // Marca como enviada
             mensagem.setStatus(StatusNotificacao.ENVIADA);
-            mensagem.setMomentoEnvio(Instant.now());
+            mensagem.setDataCriacao(Instant.now());
 
             Instant fimProcessamento = Instant.now();
             long tempoProcessamento = fimProcessamento.toEpochMilli() - inicioProcessamento.toEpochMilli();

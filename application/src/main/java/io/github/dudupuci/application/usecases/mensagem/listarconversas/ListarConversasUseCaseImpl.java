@@ -86,8 +86,8 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
 
         // Filtra mensagens válidas e ordena
         List<Mensagem> mensagensValidas = mensagens.stream()
-                .filter(m -> m.getMomentoEnvio() != null)
-                .sorted(Comparator.comparing(Mensagem::getMomentoEnvio).reversed())
+                .filter(m -> m.getDataCriacao() != null)
+                .sorted(Comparator.comparing(Mensagem::getDataCriacao).reversed())
                 .toList();
 
         // Pega última mensagem ou valores padrão
@@ -130,7 +130,7 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
                 nomeOutroUsuario,
                 outroUsuarioTipo,
                 ultimaMensagemConteudo,
-                mensagensValidas.isEmpty() ? conversa.getCriadaEm() : mensagensValidas.getFirst().getMomentoEnvio(),
+                mensagensValidas.isEmpty() ? conversa.getCriadaEm() : mensagensValidas.getFirst().getDataCriacao(),
                 naoLidas
         );
     }

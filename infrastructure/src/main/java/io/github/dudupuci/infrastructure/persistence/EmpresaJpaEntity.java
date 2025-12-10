@@ -29,5 +29,7 @@ public class EmpresaJpaEntity extends JpaEntity {
     @Column(nullable = false, unique = true)
     @Email(message = "Email inválido")
     private String email;
+
+    private String senha;
 }
 

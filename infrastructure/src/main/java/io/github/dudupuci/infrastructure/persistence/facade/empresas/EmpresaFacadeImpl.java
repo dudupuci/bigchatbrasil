@@ -4,6 +4,7 @@ import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpres
 import io.github.dudupuci.application.usecases.empresa.atualizar.AtualizarEmpresaUseCase;
 import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaInput;
 import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaOutput;
+import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaPorParamsUseCase;
 import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaUseCase;
 import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaInput;
 import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaOutput;
@@ -18,16 +19,19 @@ public class EmpresaFacadeImpl implements EmpresaFacade {
     private final AtualizarEmpresaUseCase atualizarEmpresaUseCase;
     private final BuscarEmpresaUseCase buscarEmpresaUseCase;
     private final DeletarEmpresaUseCase deletarEmpresaUseCase;
+    private final BuscarEmpresaPorParamsUseCase buscarEmpresaPorParamsUseCase;
 
     public EmpresaFacadeImpl(
             CriarEmpresaUseCase criarEmpresaUseCase,
             AtualizarEmpresaUseCase atualizarEmpresaUseCase,
             BuscarEmpresaUseCase buscarEmpresaUseCase,
-            DeletarEmpresaUseCase deletarEmpresaUseCase
+            DeletarEmpresaUseCase deletarEmpresaUseCase,
+            BuscarEmpresaPorParamsUseCase buscarEmpresaPorParamsUseCase
     ) {
         this.criarEmpresaUseCase = criarEmpresaUseCase;
         this.atualizarEmpresaUseCase = atualizarEmpresaUseCase;
         this.buscarEmpresaUseCase = buscarEmpresaUseCase;
+        this.buscarEmpresaPorParamsUseCase = buscarEmpresaPorParamsUseCase;
         this.deletarEmpresaUseCase = deletarEmpresaUseCase;
     }
 
@@ -48,7 +52,7 @@ public class EmpresaFacadeImpl implements EmpresaFacade {
 
     @Override
     public BuscarEmpresaOutput buscarPorEmail(String email) {
-        return null;
+        return this.buscarEmpresaPorParamsUseCase.execute(email);
     }
 
     @Override
