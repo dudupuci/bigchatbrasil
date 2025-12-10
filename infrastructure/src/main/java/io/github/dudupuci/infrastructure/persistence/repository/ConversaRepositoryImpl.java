@@ -50,11 +50,12 @@ public class ConversaRepositoryImpl implements ConversaRepository {
         ConversaJpaEntity jpa = new ConversaJpaEntity();
         jpa.setConversaId(conversa.getConversaId());
         jpa.setUsuario1Id(conversa.getUsuario1Id());
+        jpa.setUsuario1Tipo(conversa.getUsuario1Tipo());
         jpa.setUsuario2Id(conversa.getUsuario2Id());
+        jpa.setUsuario2Tipo(conversa.getUsuario2Tipo());
         jpa.setTipo(conversa.getTipo());
         jpa.setCriadaEm(conversa.getCriadaEm());
         jpa.setUltimaAtualizacao(conversa.getUltimaAtualizacao());
-        // Mensagens são carregadas lazy, não precisam ser setadas aqui
         return jpa;
     }
 
@@ -62,11 +63,12 @@ public class ConversaRepositoryImpl implements ConversaRepository {
         Conversa conversa = new Conversa();
         conversa.setConversaId(jpa.getConversaId());
         conversa.setUsuario1Id(jpa.getUsuario1Id());
+        conversa.setUsuario1Tipo(jpa.getUsuario1Tipo());
         conversa.setUsuario2Id(jpa.getUsuario2Id());
+        conversa.setUsuario2Tipo(jpa.getUsuario2Tipo());
         conversa.setTipo(jpa.getTipo());
         conversa.setCriadaEm(jpa.getCriadaEm());
         conversa.setUltimaAtualizacao(jpa.getUltimaAtualizacao());
-        // Mensagens são carregadas separadamente quando necessário
         return conversa;
     }
 }

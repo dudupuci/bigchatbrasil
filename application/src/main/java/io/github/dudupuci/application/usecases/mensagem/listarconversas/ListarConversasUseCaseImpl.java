@@ -60,10 +60,26 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
     }
 
     private ConversaDto criarConversaDto(Conversa conversa, Long usuarioLogadoId) {
-        // Identifica o outro usuário da conversa
-        Long outroUsuarioId = conversa.getUsuario1Id().equals(usuarioLogadoId)
-                ? conversa.getUsuario2Id()
-                : conversa.getUsuario1Id();
+        // Identifica o outro usuário da conversa CONSIDERANDO O TIPO!
+        boolean isUsuario1 = conversa.getUsuario1Id().equals(usuarioLogadoId);
+
+        Long outroUsuarioId;
+        TipoUsuario outroUsuarioTipo;
+
+        if (isUsuario1) {
+            outroUsuarioId = conversa.getUsuario2Id();
+            outroUsuarioTipo = conversa.getUsuario2Tipo();
+        } else {
+            outroUsuarioId = conversa.getUsuario1Id();
+            outroUsuarioTipo = conversa.getUsuario1Tipo();
+        }
+
+        System.out.println("🔍 DEBUG Conversa:");
+        System.out.println("  - ConversaId: " + conversa.getConversaId());
+        System.out.println("  - Usuario1: " + conversa.getUsuario1Id() + " (" + conversa.getUsuario1Tipo() + ")");
+        System.out.println("  - Usuario2: " + conversa.getUsuario2Id() + " (" + conversa.getUsuario2Tipo() + ")");
+        System.out.println("  - UsuarioLogadoId: " + usuarioLogadoId);
+        System.out.println("  - OutroUsuario: " + outroUsuarioId + " (" + outroUsuarioTipo + ")");
 
         // Busca mensagens da conversa para pegar última mensagem e contar não lidas
         List<Mensagem> mensagens = mensagemRepository.buscarPorConversaId(conversa.getConversaId());
@@ -87,24 +103,24 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
                 .filter(m -> m.getStatus() == StatusNotificacao.PENDENTE)
                 .count();
 
-        // Busca informações do outro usuário e determina o tipo
+        // Busca informações do outro usuário usando o TIPO correto
         String nomeOutroUsuario = "Usuário Desconhecido";
-        TipoUsuario tipoOutroUsuario;
 
-        // Tenta buscar como cliente primeiro
-        Optional<Cliente> clienteOpt = clienteRepository.buscarPorId(outroUsuarioId);
-        if (clienteOpt.isPresent()) {
-            nomeOutroUsuario = clienteOpt.get().getNome();
-            tipoOutroUsuario = TipoUsuario.CLIENTE;
-        } else {
-            // Se não é cliente, tenta como empresa
+        if (outroUsuarioTipo == TipoUsuario.CLIENTE) {
+            Optional<Cliente> clienteOpt = clienteRepository.buscarPorId(outroUsuarioId);
+            if (clienteOpt.isPresent()) {
+                nomeOutroUsuario = clienteOpt.get().getNome();
+                System.out.println("  - Encontrado CLIENTE: " + nomeOutroUsuario);
+            } else {
+                System.out.println("  - ⚠️ CLIENTE NÃO ENCONTRADO!");
+            }
+        } else if (outroUsuarioTipo == TipoUsuario.EMPRESA) {
             Optional<Empresa> empresaOpt = empresaRepository.buscarPorId(outroUsuarioId);
             if (empresaOpt.isPresent()) {
                 nomeOutroUsuario = empresaOpt.get().getRazaoSocial();
-                tipoOutroUsuario = TipoUsuario.EMPRESA;
+                System.out.println("  - Encontrado EMPRESA: " + nomeOutroUsuario);
             } else {
-                // Fallback
-                tipoOutroUsuario = TipoUsuario.CLIENTE;
+                System.out.println("  - ⚠️ EMPRESA NÃO ENCONTRADA!");
             }
         }
 
@@ -112,7 +128,7 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
                 conversa.getConversaId(),
                 outroUsuarioId,
                 nomeOutroUsuario,
-                tipoOutroUsuario,
+                outroUsuarioTipo,
                 ultimaMensagemConteudo,
                 mensagensValidas.isEmpty() ? conversa.getCriadaEm() : mensagensValidas.getFirst().getMomentoEnvio(),
                 naoLidas

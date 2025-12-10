@@ -1,14 +1,13 @@
 package io.github.dudupuci.infrastructure.persistence;
 
 import io.github.dudupuci.domain.enums.TipoConversa;
+import io.github.dudupuci.domain.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,8 +27,16 @@ public class ConversaJpaEntity {
     @Column(name = "usuario1_id", nullable = false)
     private Long usuario1Id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "usuario1_tipo", nullable = false)
+    private TipoUsuario usuario1Tipo;
+
     @Column(name = "usuario2_id", nullable = false)
     private Long usuario2Id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "usuario2_tipo", nullable = false)
+    private TipoUsuario usuario2Tipo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false)
@@ -40,13 +47,5 @@ public class ConversaJpaEntity {
 
     @Column(name = "ultima_atualizacao")
     private Instant ultimaAtualizacao;
-
-    /**
-     * Relacionamento OneToMany com mensagens
-     * FetchType.LAZY: mensagens só são carregadas quando acessadas
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "conversa_id", referencedColumnName = "conversa_id", insertable = false, updatable = false)
-    private List<MensagemJpaEntity> mensagens = new ArrayList<>();
 }
 

@@ -3,6 +3,7 @@ package io.github.dudupuci.domain.entities;
 import io.github.dudupuci.domain.entities.base.Entidade;
 import io.github.dudupuci.domain.enums.TipoConversa;
 import io.github.dudupuci.domain.enums.TipoOperacao;
+import io.github.dudupuci.domain.enums.TipoUsuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,9 @@ import java.util.UUID;
 public class Conversa extends Entidade {
     private UUID conversaId;
     private Long usuario1Id;
+    private TipoUsuario usuario1Tipo;
     private Long usuario2Id;
+    private TipoUsuario usuario2Tipo;
     private TipoConversa tipo;
     private Instant criadaEm;
     private Instant ultimaAtualizacao;
@@ -35,8 +38,10 @@ public class Conversa extends Entidade {
         this.ultimaAtualizacao = Instant.now();
     }
 
-    public boolean isParticipante(Long usuarioId) {
-        return this.usuario1Id.equals(usuarioId) || this.usuario2Id.equals(usuarioId);
+    public boolean isParticipante(Long usuarioId, TipoUsuario tipoUsuario) {
+        boolean isUsuario1 = this.usuario1Id.equals(usuarioId) && this.usuario1Tipo.equals(tipoUsuario);
+        boolean isUsuario2 = this.usuario2Id.equals(usuarioId) && this.usuario2Tipo.equals(tipoUsuario);
+        return isUsuario1 || isUsuario2;
     }
 
     @Override
@@ -47,7 +52,11 @@ public class Conversa extends Entidade {
         if (usuario1Id == null || usuario2Id == null) {
             throw new IllegalArgumentException("Participantes da conversa não podem ser nulos");
         }
-        if (usuario1Id.equals(usuario2Id)) {
+        if (usuario1Tipo == null || usuario2Tipo == null) {
+            throw new IllegalArgumentException("Tipos dos participantes não podem ser nulos");
+        }
+        // Valida que não são o mesmo usuário (MESMO ID + MESMO TIPO)
+        if (usuario1Id.equals(usuario2Id) && usuario1Tipo.equals(usuario2Tipo)) {
             throw new IllegalArgumentException("Uma conversa não pode ter o mesmo usuário duas vezes");
         }
     }

@@ -185,11 +185,9 @@ public class MensagensController implements MensagensControllerAPI {
             // Pega o usuário autenticado
             SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
 
-            logger.info("📝 Criando conversa entre {} (tipo: {}) e {} (tipo: {})",
-                    sessionInfo.idUsuario(),
-                    sessionInfo.tipoUsuario(),
-                    request.destinatarioId(),
-                    request.tipoDestinatario());
+            logger.info("📝 Criando conversa:");
+            logger.info("   → Usuário logado: {} (tipo: {})", sessionInfo.idUsuario(), sessionInfo.tipoUsuario());
+            logger.info("   → Destinatário REQUEST: {} (tipo: {})", request.destinatarioId(), request.tipoDestinatario());
 
             // Cria o input
             CriarConversaInput input = new CriarConversaInput(
@@ -198,6 +196,8 @@ public class MensagensController implements MensagensControllerAPI {
                     request.destinatarioId(),
                     TipoUsuario.valueOf(request.tipoDestinatario())
             );
+
+            logger.info("   → Input criado - Usuario1: {}, Usuario2: {}", input.usuarioId1(), input.usuarioId2());
 
             // Executa o caso de uso
             CriarConversaOutput output = criarConversaUseCase.execute(input);
