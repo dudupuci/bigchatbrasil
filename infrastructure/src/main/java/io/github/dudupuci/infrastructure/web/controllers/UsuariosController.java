@@ -6,6 +6,7 @@ import io.github.dudupuci.domain.enums.TipoUsuario;
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.infrastructure.security.annotations.RequiresAuth;
+import io.github.dudupuci.infrastructure.web.controllers.apidocs.UsuariosControllerAPI;
 import io.github.dudupuci.infrastructure.web.dtos.response.usuario.BuscarUsuarioPorEmailApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("/usuarios")
 @RequiresAuth
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class UsuariosController {
+public class UsuariosController implements UsuariosControllerAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuariosController.class);
 

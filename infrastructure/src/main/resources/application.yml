@@ -32,6 +32,25 @@ server:
     servlet:
         context-path: /api
 
+# Configuração do Swagger/OpenAPI
+springdoc:
+    api-docs:
+        path: /v3/api-docs
+        enabled: true
+    swagger-ui:
+        path: /swagger-ui.html
+        enabled: true
+        # Ordena endpoints por tags
+        tags-sorter: alpha
+        # Ordena operações dentro das tags
+        operations-sorter: alpha
+        # Mostra todas as requisições possíveis
+        display-request-duration: true
+        # Tenta requisições automaticamente
+        try-it-out-enabled: true
+    # Mostra todos os endpoints, incluindo os do Actuator
+    show-actuator: false
+
 management:
     endpoints:
         web:

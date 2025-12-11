@@ -36,7 +36,6 @@ public class ProcessadorMensagens {
                 item.input.destinatarioId());
 
         try {
-            // Executa o caso de uso (valida e salva no banco)
             EnviarMensagemOutput output = mensagemFacade.enviarMensagem(item.input);
 
             logger.info("Mensagem processada com sucesso: {} | ID Mensagem: {}",

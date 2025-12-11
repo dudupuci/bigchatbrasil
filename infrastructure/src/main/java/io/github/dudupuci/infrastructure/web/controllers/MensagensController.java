@@ -22,6 +22,14 @@ import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.CriarConvers
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.EnviarMensagemApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarConversasApiResponse;
 import io.github.dudupuci.infrastructure.web.dtos.response.mensagem.ListarMensagensApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +47,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/mensagens")
 @CrossOrigin(origins = "*")
+@Tag(name = "Mensagens", description = "Endpoints para chat, conversas e envio de mensagens com sistema de filas")
 @RequiresAuth
+@SecurityRequirement(name = "X-Session-Id")
 public class MensagensController implements MensagensControllerAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(MensagensController.class);
@@ -61,17 +71,43 @@ public class MensagensController implements MensagensControllerAPI {
         this.criarConversaUseCase = criarConversaUseCase;
     }
 
-    /**
-     * POST /mensagens
-     * Envia uma mensagem com PROCESSAMENTO SÍNCRONO (fila + processamento na mesma requisição)
-     * Fluxo:
-     * 1. Enfileira mensagem com priorização
-     * 2. Desenfileira imediatamente (respeita prioridade)
-     * 3. Processa na mesma requisição
-     * 4. Retorna resultado
-     */
+    @Operation(
+            summary = "Enviar mensagem",
+            description = "Envia uma mensagem com processamento síncrono através de fila com priorização (FIFO + Prioridade). " +
+                    "A mensagem é enfileirada, processada imediatamente respeitando prioridades, e o resultado retornado na mesma requisição."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Mensagem enviada com sucesso",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = EnviarMensagemApiResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Erro de validação - Dados inválidos",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Não autorizado - Token de sessão inválido",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno ao processar a mensagem",
+                    content = @Content
+            )
+    })
     @PostMapping
     public ResponseEntity<?> enviarMensagem(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados da mensagem a ser enviada (conversaId opcional para primeira mensagem)",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = EnviarMensagemApiRequest.class))
+            )
             @RequestBody EnviarMensagemApiRequest request,
             HttpServletRequest httpRequest
     ) {
@@ -131,12 +167,33 @@ public class MensagensController implements MensagensControllerAPI {
         }
     }
 
-    /**
-     * GET /mensagens/conversa/{conversaId}
-     * Lista todas as mensagens de uma conversa (essencial para o chat funcionar)
-     */
+    @Operation(
+            summary = "Listar mensagens de uma conversa",
+            description = "Retorna todas as mensagens de uma conversa específica. Essencial para exibir o histórico do chat."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Mensagens listadas com sucesso",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ListarMensagensApiResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Usuário não tem permissão para acessar esta conversa",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Não autorizado",
+                    content = @Content
+            )
+    })
     @GetMapping("/conversa/{conversaId}")
     public ResponseEntity<?> listarMensagensDaConversa(
+            @Parameter(description = "UUID da conversa", required = true, example = "123e4567-e89b-12d3-a456-426614174000")
             @PathVariable UUID conversaId,
             HttpServletRequest httpRequest
     ) {
@@ -171,13 +228,39 @@ public class MensagensController implements MensagensControllerAPI {
         }
     }
 
-    /**
-     * POST /mensagens/conversas
-     * Cria uma conversa entre dois usuários (conversaId determinístico)
-     * Chamado ao adicionar um novo contato, antes de enviar mensagens
-     */
+    @Operation(
+            summary = "Criar conversa",
+            description = "Cria uma conversa entre o usuário autenticado e outro usuário. " +
+                    "O conversaId é gerado de forma determinística (mesmo par de usuários = mesmo ID). " +
+                    "Chamado ao adicionar um novo contato antes de enviar a primeira mensagem."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Conversa criada com sucesso ou já existia",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CriarConversaApiResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Erro de validação",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Não autorizado",
+                    content = @Content
+            )
+    })
     @PostMapping("/conversas")
     public ResponseEntity<?> criarConversa(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do destinatário para criar a conversa",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = CriarConversaApiRequest.class))
+            )
             @RequestBody CriarConversaApiRequest request,
             HttpServletRequest httpRequest
     ) {
@@ -218,10 +301,26 @@ public class MensagensController implements MensagensControllerAPI {
         }
     }
 
-    /**
-     * GET /mensagens/conversas
-     * Lista todas as conversas do usuário logado
-     */
+    @Operation(
+            summary = "Listar conversas do usuário",
+            description = "Retorna todas as conversas do usuário autenticado, com informações sobre o outro participante, " +
+                    "última mensagem, quantidade de mensagens não lidas, etc."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Conversas listadas com sucesso",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ListarConversasApiResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Não autorizado",
+                    content = @Content
+            )
+    })
     @GetMapping("/conversas")
     public ResponseEntity<?> listarConversas(HttpServletRequest httpRequest) {
         try {

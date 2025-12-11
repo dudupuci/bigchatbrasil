@@ -27,12 +27,12 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("🔧 Registrando SessionInterceptor...");
         logger.info("   ↳ Patterns incluídos: /**");
-        logger.info("   ↳ Patterns excluídos: /login/**, /registrar/**");
+        logger.info("   ↳ Patterns excluídos: /auth/login/**, /registrar/**");
 
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**")  // ✅ MUDADO: Aplica em TODAS as rotas
                 .excludePathPatterns(
-                        "/login/**",           // Exclui rotas de login
+                        "/auth/login/**",           // Exclui rotas de login
                         "/registrar/**",       // Exclui rotas de registro
                         "/error"               // Exclui página de erro
                 );

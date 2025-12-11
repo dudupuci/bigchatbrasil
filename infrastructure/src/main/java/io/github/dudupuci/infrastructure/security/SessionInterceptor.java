@@ -1,5 +1,6 @@
 package io.github.dudupuci.infrastructure.security;
 
+import io.github.dudupuci.domain.constants.BcbConstants;
 import io.github.dudupuci.infrastructure.security.annotations.RequiresAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,16 +31,15 @@ public class SessionInterceptor implements HandlerInterceptor {
         String requestUri = request.getRequestURI();
         String method = request.getMethod();
 
-        // ✅ LOG SEMPRE (INFO) - Para garantir que está sendo executado
-        logger.info("🔍 SessionInterceptor EXECUTADO: {} {}", method, requestUri);
+        logger.info(" ---- SessionInterceptor EXECUTADO: {} {}", method, requestUri);
 
-        // Verifica se o handler é um método de controller
+        // verifica se o handler é um method de controller
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             logger.info("   ↳ Não é HandlerMethod ({}), liberando", handler.getClass().getSimpleName());
             return true;
         }
 
-        // Verifica se o método ou a classe tem @RequiresAuth
+        // verifica se o method ou a classe tem a nossa anotação personalizada @RequiresAuth
         boolean requiresAuth = handlerMethod.hasMethodAnnotation(RequiresAuth.class) ||
                                handlerMethod.getBeanType().isAnnotationPresent(RequiresAuth.class);
 
@@ -49,39 +49,39 @@ public class SessionInterceptor implements HandlerInterceptor {
         logger.info("   ↳ @RequiresAuth no método? {}", handlerMethod.hasMethodAnnotation(RequiresAuth.class));
         logger.info("   ↳ Requer autenticação? {}", requiresAuth);
 
-        // Se não requer autenticação, deixa passar
+        // se não requer autenticação, deixamos passar
         if (!requiresAuth) {
-            logger.warn("⚠️ LIBERADO SEM AUTENTICAÇÃO: {} {}", method, requestUri);
+            logger.warn(" ---- LIBERADO SEM AUTENTICAÇÃO: {} {}", method, requestUri);
             return true;
         }
 
-        // Pega o sessionId do header
-        String sessionId = request.getHeader("X-Session-Id");
+        // pega o sessionId do header
+        String sessionId = request.getHeader(BcbConstants.X_SESSION_ID);
 
         logger.info("   ↳ X-Session-Id fornecido? {}", sessionId != null);
 
-        // Se não tem sessionId, bloqueia
+        // se não tem sessionId, bloqueamos a requisição
         if (sessionId == null || sessionId.isBlank()) {
-            logger.error("❌ BLOQUEADO: {} {} - X-Session-Id não fornecido", method, requestUri);
+            logger.error(" ---- BLOQUEADO: {} {} - X-Session-Id não fornecido", method, requestUri);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"error\": \"Autenticação necessária. Forneça X-Session-Id no header.\"}");
             response.setContentType("application/json");
             return false;
         }
 
-        // Valida a sessão
+        // valida a sessão do usuário
         boolean isValid = sessionManager.isValidSession(sessionId);
         logger.info("   ↳ Sessão válida? {}", isValid);
 
         if (!isValid) {
-            logger.error("❌ BLOQUEADO: {} {} - Sessão inválida: {}", method, requestUri, sessionId);
+            logger.error(" ---- BLOQUEADO: {} {} - Sessão inválida: {}", method, requestUri, sessionId);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"error\": \"Sessão inválida ou expirada\"}");
             response.setContentType("application/json");
             return false;
         }
 
-        // Adiciona informações da sessão na request para uso nos controllers
+        // adiciona informações da sessão na request para uso nos controllers
         SessionInfo sessionInfo = sessionManager.getSessionInfo(sessionId);
         request.setAttribute("sessionInfo", sessionInfo);
         request.setAttribute("userId", sessionInfo.idUsuario());
