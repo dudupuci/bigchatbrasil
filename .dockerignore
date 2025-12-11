@@ -1,26 +1,65 @@
-# Ignorar arquivos de build
+# Maven
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
 
-# Ignorar arquivos do IDE
+# IDE
 .idea/
-*.iws
 *.iml
-*.ipr
 .vscode/
+.settings/
 .classpath
 .project
-.settings/
+.factorypath
 
-# Ignorar logs
-*.log
-
-# Ignorar arquivos do sistema operacional
+# OS
 .DS_Store
 Thumbs.db
 
-# Ignorar volumes do Docker
-postgres_data/
+# Logs
+*.log
+logs/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Tests
+**/test-classes/
+**/surefire-reports/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Node (frontend se houver)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Outros
+.env
+.env.local
+*.pem
+*.key
 

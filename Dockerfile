@@ -1,5 +1,5 @@
-# Build stage
-FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+# Build stage - usa Java 21
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY domain/pom.xml domain/
 COPY application/pom.xml application/
 COPY infrastructure/pom.xml infrastructure/
 
-# Baixar dependências
+# Baixar dependências (cache layer)
 RUN mvn dependency:go-offline -B
 
 # Copiar código fonte
@@ -19,25 +19,25 @@ COPY domain/src domain/src
 COPY application/src application/src
 COPY infrastructure/src infrastructure/src
 
-# Build do projeto
-RUN mvn clean package -DskipTests
+# Build do projeto (multi-módulo)
+RUN mvn clean package -DskipTests -pl infrastructure -am
 
-# Runtime stage
+# Runtime stage - usa Java 21
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Criar usuário não-root
+# Criar usuário não-root para segurança
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Copiar JAR do build stage
 COPY --from=build /app/infrastructure/target/*.jar app.jar
 
-# Expor porta
+# Expor porta da aplicação
 EXPOSE 8080
 
-# Healthcheck
+# Healthcheck para verificar se a aplicação está funcionando
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/actuator/health || exit 1
 

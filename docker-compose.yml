@@ -7,15 +7,15 @@ services:
       POSTGRES_DB: bigchatbrasil
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - bigchatbrasil-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bigchatbrasil"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -33,6 +33,7 @@ services:
       DB_NAME: bigchatbrasil
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
+      JAVA_OPTS: "-Xmx512m -Xms256m"
     ports:
       - "8080:8080"
     depends_on:
@@ -40,9 +41,16 @@ services:
         condition: service_healthy
     networks:
       - bigchatbrasil-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/api/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
 
 volumes:
   postgres_data:
+    driver: local
 
 networks:
   bigchatbrasil-network:
