@@ -6,11 +6,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record EnviarMensagemOutput(
-        Long id,
+        UUID id,
         Instant momentoEnvio,
         UUID conversaId,
-        Long remetenteId,
-        Long destinatarioId,
+        UUID remetenteId,
+        UUID destinatarioId,
         String conteudo,
         StatusNotificacao status,
         Boolean sucesso

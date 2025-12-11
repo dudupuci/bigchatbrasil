@@ -46,14 +46,14 @@ public class MensagemRepositoryImpl implements MensagemRepository {
     }
 
     @Override
-    public Optional<Mensagem> buscarPorId(Long id) {
+    public Optional<Mensagem> buscarPorId(UUID id) {
         return mensagemJpaRepository.findById(id)
                 .map(mensagemMapper::toDomain);
     }
 
     @Transactional
     @Override
-    public void deletarPorId(Long id) {
+    public void deletarPorId(UUID id) {
         mensagemJpaRepository.deleteById(id);
     }
 
@@ -66,7 +66,7 @@ public class MensagemRepositoryImpl implements MensagemRepository {
     }
 
     @Override
-    public List<Mensagem> buscarPorDestinatarioId(Long destinatarioId) {
+    public List<Mensagem> buscarPorDestinatarioId(UUID destinatarioId) {
         return mensagemJpaRepository.findByDestinatarioId(destinatarioId)
                 .stream()
                 .map(mensagemMapper::toDomain)
@@ -74,7 +74,7 @@ public class MensagemRepositoryImpl implements MensagemRepository {
     }
 
     @Override
-    public List<Mensagem> buscarPorRemetenteId(Long remetenteId) {
+    public List<Mensagem> buscarPorRemetenteId(UUID remetenteId) {
         return mensagemJpaRepository.findByRemetenteId(remetenteId)
                 .stream()
                 .map(mensagemMapper::toDomain)

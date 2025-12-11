@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.dudupuci.application.usecases.cliente.atualizar.AtualizarClienteInput;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * Request para atualização PARCIAL de cliente
@@ -31,7 +32,7 @@ public record AtualizarClienteApiRequest(
         @JsonProperty(value = "is_ativo")
         Boolean isAtivo
 ) {
-    public AtualizarClienteInput toApplicationInput(Long id) {
+    public AtualizarClienteInput toApplicationInput(UUID id) {
         return new AtualizarClienteInput(
                 id,
                 this.nome,

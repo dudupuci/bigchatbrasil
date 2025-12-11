@@ -3,10 +3,12 @@ package io.github.dudupuci.infrastructure.security;
 import io.github.dudupuci.domain.enums.TipoUsuario;
 import io.github.dudupuci.domain.validators.BcbEntityValidator;
 
+import java.util.UUID;
+
 /**
  * Informações da sessão de um usuário autenticado
  */
-public record SessionInfo(Long idUsuario, TipoUsuario tipoUsuario) {
+public record SessionInfo(UUID idUsuario, TipoUsuario tipoUsuario) {
 
     public boolean isCliente() {
         return BcbEntityValidator.isTipoUsuarioCliente(this.tipoUsuario);

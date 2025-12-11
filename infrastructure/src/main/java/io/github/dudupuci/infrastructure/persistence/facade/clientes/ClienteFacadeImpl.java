@@ -11,6 +11,8 @@ import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteUseCase
 import io.github.dudupuci.application.usecases.cliente.deletar.DeletarClienteUseCase;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class ClienteFacadeImpl implements ClienteFacade {
 
@@ -50,12 +52,12 @@ public class ClienteFacadeImpl implements ClienteFacade {
     }
 
     @Override
-    public BuscarClienteOutput buscarPorId(Long id) {
+    public BuscarClienteOutput buscarPorId(UUID id) {
         return this.buscarClienteUseCase.execute(id);
     }
 
     @Override
-    public void deletar(Long input) {
+    public void deletar(UUID input) {
         this.deletarClienteUseCase.execute(input);
     }
 }

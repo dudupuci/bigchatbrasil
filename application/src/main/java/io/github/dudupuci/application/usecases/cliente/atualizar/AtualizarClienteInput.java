@@ -5,13 +5,14 @@ import io.github.dudupuci.domain.enums.Sexo;
 import io.github.dudupuci.domain.enums.TipoDocumento;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * Input para atualização parcial de cliente
  * TODOS os campos são opcionais (exceto ID)
  */
 public record AtualizarClienteInput(
-        Long id,
+        UUID id,
         String nome,
         String sobrenome,
         String sexo,

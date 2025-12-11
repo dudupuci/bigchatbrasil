@@ -22,17 +22,17 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MensagemJpaEntity extends JpaEntity {
 
-    @Column(name = "conversa_id", nullable = false)
+    @Column(name = "conversa_id", nullable = false, columnDefinition = "uuid")
     @NotNull(message = "ID da conversa é obrigatório")
     private UUID conversaId;
 
-    @Column(name = "remetente_id", nullable = false)
+    @Column(name = "remetente_id", nullable = false, columnDefinition = "uuid")
     @NotNull(message = "ID do remetente é obrigatório")
-    private Long remetenteId;
+    private UUID remetenteId;
 
-    @Column(name = "destinatario_id", nullable = false)
+    @Column(name = "destinatario_id", nullable = false, columnDefinition = "uuid")
     @NotNull(message = "ID do destinatário é obrigatório")
-    private Long destinatarioId;
+    private UUID destinatarioId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     @Size(min = 1)

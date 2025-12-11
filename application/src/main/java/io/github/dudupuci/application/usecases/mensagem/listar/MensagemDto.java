@@ -9,10 +9,10 @@ import java.util.UUID;
  * Output de uma mensagem individual na listagem
  */
 public record MensagemDto(
-        Long id,
+        UUID id,
         UUID conversaId,
-        Long remetenteId,
-        Long destinatarioId,
+        UUID remetenteId,
+        UUID destinatarioId,
         String conteudo,
         StatusNotificacao status,
         Instant momentoEnvio

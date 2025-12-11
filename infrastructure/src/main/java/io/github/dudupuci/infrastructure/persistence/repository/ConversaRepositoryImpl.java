@@ -34,7 +34,7 @@ public class ConversaRepositoryImpl implements ConversaRepository {
     }
 
     @Override
-    public List<Conversa> buscarPorUsuarioId(Long usuarioId) {
+    public List<Conversa> buscarPorUsuarioId(UUID usuarioId) {
         return conversaJpaRepository.findByUsuarioId(usuarioId)
                 .stream()
                 .map(this::toDomain)

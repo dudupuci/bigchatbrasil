@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 public record ConversaDto(
         UUID conversaId,
-        Long outroUsuarioId,
+        UUID outroUsuarioId,
         String outroUsuarioNome,
         TipoUsuario outroUsuarioTipo,
         String ultimaMensagem,

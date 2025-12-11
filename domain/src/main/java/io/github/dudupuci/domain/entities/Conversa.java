@@ -21,9 +21,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Conversa extends Entidade {
     private UUID conversaId;
-    private Long usuario1Id;
+    private UUID usuario1Id;
     private TipoUsuario usuario1Tipo;
-    private Long usuario2Id;
+    private UUID usuario2Id;
     private TipoUsuario usuario2Tipo;
     private TipoConversa tipo;
     private Instant criadaEm;
@@ -38,7 +38,7 @@ public class Conversa extends Entidade {
         this.ultimaAtualizacao = Instant.now();
     }
 
-    public boolean isParticipante(Long usuarioId, TipoUsuario tipoUsuario) {
+    public boolean isParticipante(UUID usuarioId, TipoUsuario tipoUsuario) {
         boolean isUsuario1 = this.usuario1Id.equals(usuarioId) && this.usuario1Tipo.equals(tipoUsuario);
         boolean isUsuario2 = this.usuario2Id.equals(usuarioId) && this.usuario2Tipo.equals(tipoUsuario);
         return isUsuario1 || isUsuario2;

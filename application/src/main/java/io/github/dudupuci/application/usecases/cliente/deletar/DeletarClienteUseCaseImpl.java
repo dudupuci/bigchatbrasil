@@ -2,6 +2,8 @@ package io.github.dudupuci.application.usecases.cliente.deletar;
 
 import io.github.dudupuci.domain.repositories.ClienteRepository;
 
+import java.util.UUID;
+
 public class DeletarClienteUseCaseImpl extends DeletarClienteUseCase {
 
     private final ClienteRepository clienteRepository;
@@ -11,7 +13,7 @@ public class DeletarClienteUseCaseImpl extends DeletarClienteUseCase {
     }
 
     @Override
-    public void execute(Long id) {
+    public void execute(UUID id) {
         try {
             // Verifica se o cliente existe antes de deletar
             this.clienteRepository.buscarPorId(id)

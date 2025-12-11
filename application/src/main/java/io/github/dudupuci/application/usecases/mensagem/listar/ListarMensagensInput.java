@@ -7,7 +7,7 @@ import java.util.UUID;
  */
 public record ListarMensagensInput(
         UUID conversaId,
-        Long usuarioId
+        UUID usuarioId
 ) {
 }
 

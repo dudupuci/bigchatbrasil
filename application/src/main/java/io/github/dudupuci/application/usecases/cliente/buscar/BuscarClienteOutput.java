@@ -4,8 +4,10 @@ package io.github.dudupuci.application.usecases.cliente.buscar;
 import io.github.dudupuci.domain.entities.Cliente;
 import io.github.dudupuci.domain.enums.Sexo;
 
+import java.util.UUID;
+
 public record BuscarClienteOutput(
-        Long id,
+        UUID id,
         String nome,
         String sobrenome,
         String sexo,

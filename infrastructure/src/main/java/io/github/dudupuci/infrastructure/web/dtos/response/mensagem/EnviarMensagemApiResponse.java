@@ -6,10 +6,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record EnviarMensagemApiResponse(
-        Long id,
+        UUID id,
         UUID conversaId,
-        Long remetenteId,
-        Long destinatarioId,
+        UUID remetenteId,
+        UUID destinatarioId,
         String conteudo,
         String status,
         String prioridade,

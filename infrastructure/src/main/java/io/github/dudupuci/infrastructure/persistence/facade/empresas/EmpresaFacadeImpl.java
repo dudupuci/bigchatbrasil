@@ -12,6 +12,8 @@ import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaUseCase
 import io.github.dudupuci.application.usecases.empresa.deletar.DeletarEmpresaUseCase;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class EmpresaFacadeImpl implements EmpresaFacade {
 
@@ -56,5 +58,5 @@ public class EmpresaFacadeImpl implements EmpresaFacade {
     }
 
     @Override
-    public void deletar(Long input) { this.deletarEmpresaUseCase.execute(input);}
+    public void deletar(UUID input) { this.deletarEmpresaUseCase.execute(input);}
 }

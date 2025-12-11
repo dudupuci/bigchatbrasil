@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface ClienteJpaRepository extends JpaRepository<ClienteJpaEntity, Long> {
+public interface ClienteJpaRepository extends JpaRepository<ClienteJpaEntity, UUID> {
 
         @Query("SELECT c FROM ClienteJpaEntity c WHERE LOWER(c.email) = LOWER(:email)")
         Optional<ClienteJpaEntity> findByEmail(@Param("email") String email);

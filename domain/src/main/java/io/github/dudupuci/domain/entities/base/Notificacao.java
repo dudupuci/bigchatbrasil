@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,5 +17,5 @@ public abstract class Notificacao extends Entidade {
     private PrioridadeNotificacao prioridade;
     private BigDecimal custo;
     private String conteudo;
-    private Long remetenteId;
+    private UUID remetenteId;
 }

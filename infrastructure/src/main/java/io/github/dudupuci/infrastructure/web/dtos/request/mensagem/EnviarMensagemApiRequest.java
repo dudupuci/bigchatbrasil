@@ -12,14 +12,14 @@ import java.util.UUID;
  */
 public record EnviarMensagemApiRequest(
         UUID conversaId,
-        Long destinatarioId,
+        UUID destinatarioId,
         String tipoDestinatario, // "CLIENTE" ou "EMPRESA"
         String conteudo,
         String tipo,
         String prioridade
 ) {
 
-    public EnviarMensagemInput toApplicationInput(Long remetenteId, TipoUsuario tipoRemetente) {
+    public EnviarMensagemInput toApplicationInput(UUID remetenteId, TipoUsuario tipoRemetente) {
         return new EnviarMensagemInput(
                 this.conversaId,
                 remetenteId,

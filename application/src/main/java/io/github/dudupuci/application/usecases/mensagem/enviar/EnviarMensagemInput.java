@@ -14,9 +14,9 @@ import java.util.UUID;
 
 public record EnviarMensagemInput(
         UUID conversaId,
-        Long remetenteId,
+        UUID remetenteId,
         TipoUsuario tipoRemetente,
-        Long destinatarioId,
+        UUID destinatarioId,
         TipoUsuario tipoDestinatario,
         String conteudo,
         String tipo,
@@ -53,13 +53,11 @@ public record EnviarMensagemInput(
      * - Cliente 1 → Empresa 2 = conversaId X
      * - Empresa 2 → Cliente 1 = conversaId X (mesmo!)
      */
-    private static UUID gerarConversaId(Long remetenteId, Long destinatarioId) {
-        // Ordena IDs para garantir mesmo hash independente da direção
-        long menor = Math.min(remetenteId, destinatarioId);
-        long maior = Math.max(remetenteId, destinatarioId);
-
-        // Cria string única para o par
-        String chave = menor + "-" + maior;
+    private static UUID gerarConversaId(UUID remetenteId, UUID destinatarioId) {
+        // Cria string única para o par usando os UUIDs
+        String chave = remetenteId.compareTo(destinatarioId) < 0
+                ? remetenteId + "|" + destinatarioId
+                : destinatarioId + "|" + remetenteId;
 
         try {
             // Gera hash SHA-256 da chave

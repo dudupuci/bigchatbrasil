@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ConversaRepository {
     Conversa salvar(Conversa conversa);
     Optional<Conversa> buscarPorId(UUID conversaId);
-    List<Conversa> buscarPorUsuarioId(Long usuarioId);
+    List<Conversa> buscarPorUsuarioId(UUID usuarioId);
     boolean existePorId(UUID conversaId);
 }
 

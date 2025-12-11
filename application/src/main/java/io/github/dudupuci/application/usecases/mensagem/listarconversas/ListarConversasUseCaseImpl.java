@@ -59,12 +59,12 @@ public class ListarConversasUseCaseImpl extends ListarConversasUseCase {
         return new ListarConversasOutput(conversasDto, conversasDto.size());
     }
 
-    private ConversaDto criarConversaDto(Conversa conversa, Long usuarioLogadoId, TipoUsuario tipoUsuarioLogado) {
+    private ConversaDto criarConversaDto(Conversa conversa, UUID usuarioLogadoId, TipoUsuario tipoUsuarioLogado) {
         // Identifica o outro usuário COMPARANDO ID + TIPO!
         boolean isUsuario1 = conversa.getUsuario1Id().equals(usuarioLogadoId)
                 && conversa.getUsuario1Tipo().equals(tipoUsuarioLogado);
 
-        Long outroUsuarioId;
+        UUID outroUsuarioId;
         TipoUsuario outroUsuarioTipo;
 
         if (isUsuario1) {

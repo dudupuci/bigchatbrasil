@@ -2,8 +2,10 @@ package io.github.dudupuci.application.usecases.empresa.buscar;
 
 import io.github.dudupuci.domain.entities.Empresa;
 
+import java.util.UUID;
+
 public record BuscarEmpresaOutput(
-        Long id,
+        UUID id,
         String razaoSocial,
         String cnpj,
         String telefone,

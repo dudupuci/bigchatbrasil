@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
 public abstract class Entidade {
-    protected Long id;
+    protected UUID id;
     protected Instant dataCriacao;
     protected Instant dataAtualizacao;
 

@@ -2,8 +2,10 @@ package io.github.dudupuci.application.usecases.empresa.atualizar;
 
 import io.github.dudupuci.domain.entities.Empresa;
 
+import java.util.UUID;
+
 public record AtualizarEmpresaInput(
-        Long id,
+        UUID id,
         String razaoSocial,
         String cnpj,
         String telefone,

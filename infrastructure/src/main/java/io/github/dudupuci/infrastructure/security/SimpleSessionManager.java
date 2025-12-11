@@ -19,7 +19,7 @@ public class SimpleSessionManager {
     /**
      * Cria uma nova sessão para um usuário (cliente ou empresa)
      */
-    public String createSession(Long idUsuario, TipoUsuario tipoUsuario) {
+    public String createSession(UUID idUsuario, TipoUsuario tipoUsuario) {
         String sessionId = UUID.randomUUID().toString();
         SESSIONS.put(sessionId, new SessionInfo(idUsuario, tipoUsuario));
         return sessionId;
@@ -35,7 +35,7 @@ public class SimpleSessionManager {
     /**
      * Retorna apenas o ID do usuário (compatibilidade)
      */
-    public Long getIdUsuario(String sessionId) {
+    public UUID getIdUsuario(String sessionId) {
         SessionInfo info = SESSIONS.get(sessionId);
         return info != null ? info.idUsuario() : null;
     }

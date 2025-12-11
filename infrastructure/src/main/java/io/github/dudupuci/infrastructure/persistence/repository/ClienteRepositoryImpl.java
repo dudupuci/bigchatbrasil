@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -74,13 +75,13 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public Optional<Cliente> buscarPorId(Long id) {
+    public Optional<Cliente> buscarPorId(UUID id) {
         return clienteJpaRepository.findById(id)
                 .map(clienteMapper::toDomain);
     }
 
     @Override
-    public void deletarPorId(Long id) {
+    public void deletarPorId(UUID id) {
         clienteJpaRepository.deleteById(id);
     }
 

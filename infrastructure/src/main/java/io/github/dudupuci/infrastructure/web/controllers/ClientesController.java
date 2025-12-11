@@ -10,6 +10,8 @@ import io.github.dudupuci.infrastructure.web.dtos.response.cliente.BuscarCliente
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping(path = "/clientes")
 @RequiresAuth
@@ -24,11 +26,11 @@ public class ClientesController implements ClientesControllerAPI {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(
             @RequestHeader("X-Session-Id") String sessionId,
-            @PathVariable Long id
+            @PathVariable String id
     ) {
         try {
             BuscarClienteApiResponse apiResponse = BuscarClienteApiResponse.toApiResponse(
-                    this.clienteFacade.buscarPorId(id)
+                    this.clienteFacade.buscarPorId(UUID.fromString(id))
             );
             return ResponseEntity.ok(apiResponse);
         } catch (Exception err) {
@@ -37,11 +39,11 @@ public class ClientesController implements ClientesControllerAPI {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarClienteApiRequest request) {
+    public ResponseEntity<?> atualizar(@PathVariable String id, @RequestBody AtualizarClienteApiRequest request) {
         try {
-            AtualizarClienteInput input = request.toApplicationInput(id);
+            AtualizarClienteInput input = request.toApplicationInput(UUID.fromString(id));
             this.clienteFacade.atualizar(input);
-            AtualizarClienteApiResponse apiResponse = AtualizarClienteApiResponse.toApiResponse(id, input.nome());
+            AtualizarClienteApiResponse apiResponse = AtualizarClienteApiResponse.toApiResponse(UUID.fromString(id), input.nome());
             return ResponseEntity.ok(apiResponse);
         } catch (Exception err) {
             return ResponseEntity.badRequest().body("Erro ao atualizar: " + err.getMessage());
@@ -49,9 +51,9 @@ public class ClientesController implements ClientesControllerAPI {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> deletar(@PathVariable String id) {
         try {
-            this.clienteFacade.deletar(id);
+            this.clienteFacade.deletar(UUID.fromString(id));
             return ResponseEntity.noContent().build();
         } catch (Exception err) {
             return ResponseEntity.badRequest().build();

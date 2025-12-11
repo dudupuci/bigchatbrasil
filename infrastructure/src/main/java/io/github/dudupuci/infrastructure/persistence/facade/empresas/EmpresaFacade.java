@@ -6,11 +6,13 @@ import io.github.dudupuci.application.usecases.empresa.buscar.BuscarEmpresaOutpu
 import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaInput;
 import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaOutput;
 
+import java.util.UUID;
+
 public interface EmpresaFacade {
     CriarEmpresaOutput criar(CriarEmpresaInput input);
     void atualizar(AtualizarEmpresaInput input);
     BuscarEmpresaOutput buscar(BuscarEmpresaInput input);
     BuscarEmpresaOutput buscarPorEmail(String email);
-    void deletar(Long input);
+    void deletar(UUID input);
 }
 

@@ -5,10 +5,12 @@ import io.github.dudupuci.application.usecases.cliente.buscar.BuscarClienteOutpu
 import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteInput;
 import io.github.dudupuci.application.usecases.cliente.criar.CriarClienteOutput;
 
+import java.util.UUID;
+
 public interface ClienteFacade {
     CriarClienteOutput criar(CriarClienteInput input);
     void atualizar(AtualizarClienteInput input);
     BuscarClienteOutput buscarPorEmail(String email);
-    BuscarClienteOutput buscarPorId(Long id);
-    void deletar(Long input);
+    BuscarClienteOutput buscarPorId(UUID id);
+    void deletar(UUID input);
 }

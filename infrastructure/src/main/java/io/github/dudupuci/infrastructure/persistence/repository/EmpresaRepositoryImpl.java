@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class EmpresaRepositoryImpl implements EmpresaRepository {
@@ -40,13 +41,13 @@ public class EmpresaRepositoryImpl implements EmpresaRepository {
     }
 
     @Override
-    public Optional<Empresa> buscarPorId(Long id) {
+    public Optional<Empresa> buscarPorId(UUID id) {
         return empresaJpaRepository.findById(id)
                 .map(empresaMapper::toDomain);
     }
 
     @Override
-    public void deletarPorId(Long id) {
+    public void deletarPorId(UUID id) {
         empresaJpaRepository.deleteById(id);
     }
 

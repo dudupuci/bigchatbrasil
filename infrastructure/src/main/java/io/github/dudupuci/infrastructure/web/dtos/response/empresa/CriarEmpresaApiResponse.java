@@ -2,8 +2,10 @@ package io.github.dudupuci.infrastructure.web.dtos.response.empresa;
 
 import io.github.dudupuci.application.usecases.empresa.criar.CriarEmpresaOutput;
 
+import java.util.UUID;
+
 public record CriarEmpresaApiResponse(
-        Long id,
+        UUID id,
         String razaoSocial,
         Boolean sucesso
 ) {

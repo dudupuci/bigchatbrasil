@@ -6,14 +6,15 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.UUID;
 
 @MappedSuperclass
 @Getter
 public abstract class JpaEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
-    protected Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, updatable = false, columnDefinition = "uuid")
+    protected UUID id;
 
     @Setter
     @Column(name = "data_criacao", updatable = false, nullable = false)

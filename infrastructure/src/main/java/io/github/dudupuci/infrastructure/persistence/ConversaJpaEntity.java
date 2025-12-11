@@ -24,15 +24,15 @@ public class ConversaJpaEntity {
     @Column(name = "conversa_id", columnDefinition = "uuid")
     private UUID conversaId;
 
-    @Column(name = "usuario1_id", nullable = false)
-    private Long usuario1Id;
+    @Column(name = "usuario1_id", nullable = false, columnDefinition = "uuid")
+    private UUID usuario1Id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "usuario1_tipo", nullable = false)
     private TipoUsuario usuario1Tipo;
 
-    @Column(name = "usuario2_id", nullable = false)
-    private Long usuario2Id;
+    @Column(name = "usuario2_id", nullable = false, columnDefinition = "uuid")
+    private UUID usuario2Id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "usuario2_tipo", nullable = false)

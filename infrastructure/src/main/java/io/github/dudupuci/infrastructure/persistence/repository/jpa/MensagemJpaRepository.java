@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface MensagemJpaRepository extends JpaRepository<MensagemJpaEntity, Long> {
+public interface MensagemJpaRepository extends JpaRepository<MensagemJpaEntity, UUID> {
     List<MensagemJpaEntity> findByConversaId(UUID conversaId);
-    List<MensagemJpaEntity> findByDestinatarioId(Long destinatarioId);
-    List<MensagemJpaEntity> findByRemetenteId(Long remetenteId);
+    List<MensagemJpaEntity> findByDestinatarioId(UUID destinatarioId);
+    List<MensagemJpaEntity> findByRemetenteId(UUID remetenteId);
 }
 

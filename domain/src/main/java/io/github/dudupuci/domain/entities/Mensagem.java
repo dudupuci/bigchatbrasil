@@ -13,9 +13,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class Mensagem extends Notificacao {
-    private Long id;
     private UUID conversaId;
-    private Long destinatarioId;
+    private UUID destinatarioId;
 
     @Override
     public void validar(TipoOperacao tipoOperacao) {

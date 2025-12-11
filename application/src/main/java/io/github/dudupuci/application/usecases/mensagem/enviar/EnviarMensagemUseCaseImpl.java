@@ -7,6 +7,8 @@ import io.github.dudupuci.domain.repositories.ClienteRepository;
 import io.github.dudupuci.domain.repositories.EmpresaRepository;
 import io.github.dudupuci.domain.repositories.MensagemRepository;
 
+import java.util.UUID;
+
 
 public class  EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
 
@@ -74,7 +76,7 @@ public class  EnviarMensagemUseCaseImpl extends EnviarMensagemUseCase {
         validarExistenciaUsuario(input.destinatarioId(), input.tipoDestinatario(), BcbConstants.DESTINATARIO);
     }
 
-    private void validarExistenciaUsuario(Long id, TipoUsuario tipo, String papel) {
+    private void validarExistenciaUsuario(UUID id, TipoUsuario tipo, String papel) {
         boolean existe = switch (tipo) {
             case CLIENTE -> clienteRepository.buscarPorId(id).isPresent();
             case EMPRESA -> empresaRepository.buscarPorId(id).isPresent();

@@ -9,10 +9,10 @@ import java.util.UUID;
  * DTO da API para uma mensagem individual
  */
 public record MensagemApiResponse(
-        Long id,
+        UUID id,
         UUID conversaId,
-        Long remetenteId,
-        Long destinatarioId,
+        UUID remetenteId,
+        UUID destinatarioId,
         String conteudo,
         String status,
         Instant momentoEnvio

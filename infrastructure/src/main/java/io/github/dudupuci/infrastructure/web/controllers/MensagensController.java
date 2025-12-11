@@ -79,7 +79,7 @@ public class MensagensController implements MensagensControllerAPI {
             // Pega o ID do usuário autenticado da sessão
             // SessionInterceptor já validou o X-Session-Id e colocou sessionInfo aqui
             SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
-            Long remetenteId = sessionInfo.idUsuario();
+            UUID remetenteId = sessionInfo.idUsuario();
 
             logger.info("📨 Recebendo mensagem de {} (tipo: {}) para destinatário {} (tipo: {}) | Prioridade: {}",
                     remetenteId,
@@ -143,7 +143,7 @@ public class MensagensController implements MensagensControllerAPI {
         try {
             // Pega o usuário autenticado da sessão
             SessionInfo sessionInfo = (SessionInfo) httpRequest.getAttribute("sessionInfo");
-            Long usuarioId = sessionInfo.idUsuario();
+            UUID usuarioId = sessionInfo.idUsuario();
 
             logger.info("📋 Listando mensagens da conversa: {} | Usuário: {}", conversaId, usuarioId);
 
